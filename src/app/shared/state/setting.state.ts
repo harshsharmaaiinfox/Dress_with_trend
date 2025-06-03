@@ -62,7 +62,7 @@ export class SettingState {
               },
               {
                 name: 'cash_free',
-                status: false,
+                status: true,
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
@@ -74,7 +74,7 @@ export class SettingState {
               },
               {
                 name: 'gaonvashi_cashfree',
-                status: true,
+                status: false,
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
