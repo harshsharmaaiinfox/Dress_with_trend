@@ -32,8 +32,8 @@ export const themeOptionsYourDreamFashion = {
                 "disk": "public",
                 "created_by_id": 1,
                 "created_at": "2025-01-21T07:26:35.000000Z",
-                "asset_url": "../assets/images/dress-png.png",
-                "original_url": "../assets/images/dress-png.png"
+                "asset_url": "../assets/images/dress-fav.png",
+                "original_url": "../assets/images/dress-fav.png"
             },
             "header_logo": {
                 "id": 2153,
