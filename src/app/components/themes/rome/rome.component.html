@@ -1,0 +1,295 @@
+<div>
+  <!-- Home section start -->
+  <section class="home-section-2 home-section-small section-b-space"
+      [ngStyle]="{'background-image': 'url(' + data?.content?.home_banner?.bg_image_url+ ')'}"
+      *ngIf="data?.content?.home_banner">
+      <app-theme-home-banner [theme]="'rome'" [data]="data?.content?.home_banner"></app-theme-home-banner>
+  </section>
+  <!-- Home Section End -->
+
+  <!-- Category Section Start -->
+  <section class="category-section-2" *ngIf="data?.content?.categories_image_list?.status">
+    <div class="container-fluid-lg">
+      <app-title
+        [title]="data?.content?.categories_image_list?.title"
+        [style]="'simple'">
+      </app-title>
+      <div class="row">
+        <div class="col-10 m-auto">
+          <app-theme-categories
+            [style]="'horizontal'"
+            [theme]="'rome'"
+            [categoryIds]="data?.content?.categories_image_list?.category_ids || []"
+            [sliderOption]="categorySlider">
+          </app-theme-categories>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Category Section End -->
+
+
+  <!-- My Cystom Section -->
+
+
+  <section class="overflow-hidden">
+    <div class="card-section container-fluid-lg">
+      <div class="col-xxl-12 text-center">
+        <h3>Elegant Wedding Curation</h3>
+        <p class="pt-2">Discover Panash India’s latest wedding collection, designed for brides, grooms, and their loved ones. From traditional elegance to modern flair, explore exquisite outfits that embody the rich heritage and timeless beauty of Indian weddings. Perfect for every celebration, our collection ensures you look stunning, feel confident, and make unforgettable memories.</p>
+      </div>
+      <div class="card-main d-flex justify-content-between mt-3 gap-3">
+        <div class="card-inner">
+          <a href="/collections?category=women&sortBy=asc">
+            <img src="assets/images/women-card-2.png" alt="">
+          </a>
+        </div>
+        <div class="card-inner">
+          <a href="/collections?category=women&sortBy=asc">
+            <img src="assets/images/women-card-3.png" alt="">
+          </a>
+        </div>
+  
+        <div class="card-inner">
+          <a href="/collections?category=women&sortBy=asc">
+            <img src="assets/images/women-card-7.png" alt="">
+          </a>
+        </div>
+  
+        <div class="card-inner">
+          <a href="/collections?category=women&sortBy=asc">
+            <img src="assets/images/women-card-5.png" alt="">
+          </a>
+        </div>
+        <div class="card-inner">
+          <a href="/collections?category=women&sortBy=asc">
+            <img src="assets/images/women-card-6.png" alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+
+<!-- My Cystom Section End -->
+
+
+
+
+
+
+  <!-- Value Section Start -->
+  <section class="overflow-hidden" *ngIf="data?.content?.value_banners?.status">
+    <app-title
+      [title]="data?.content?.value_banners?.title"
+      [class]="'container-fluid-lg'"
+      [style]="'simple'">
+    </app-title>
+    <div class="row">
+      <div class="col-12">
+        <app-theme-banner [style]="'horizontal'" [banners]="data?.content?.value_banners?.banners"></app-theme-banner>
+      </div>
+    </div>
+  </section>
+  <!-- Value Section End -->
+
+  <!-- Product Section Start -->
+  <section class="product-section" *ngIf="data?.content?.categories_products?.status && data?.content?.categories_products?.category_ids?.length">
+    <app-category-product-filter [data]="data?.content" [grid]="showProductBox"></app-category-product-filter>
+  </section>
+  <!-- Product Section End -->
+
+   <!-- Top Seller start -->
+   <ng-container *ngIf="data?.content?.seller?.status">
+     <section>
+       <div class="container-fluid-lg">
+        <app-title 
+        [title]="data?.content?.seller?.title" 
+        [style]="'simple'">
+        </app-title>
+        <app-top-seller [sellerIds]="data?.content?.seller?.store_ids || []"></app-top-seller>
+       </div>
+     </section>
+   </ng-container>
+   <!-- Top Seller End -->
+
+  <!-- Banner Section Start -->
+  <section class="banner-section" *ngIf="data?.content?.two_column_banners?.status">
+    <div class="container-fluid-lg">
+      <div class="row gy-xl-0 gy-3">
+        <div class="col-lg-6">
+          <app-image-link
+            [image]="data?.content?.two_column_banners?.banner_1"
+            [class]="'banner-contain-3 hover-effect'"
+            [bgImage]="false">
+          </app-image-link>
+        </div>
+        <div class="col-lg-6">
+          <app-image-link
+            [image]="data?.content?.two_column_banners?.banner_2"
+            [class]="'banner-contain-3 hover-effect'"
+            [bgImage]="false">
+          </app-image-link>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Banner Section End -->
+
+  <!-- <section class="top-selling-section border-box section-b-space" *ngIf="data?.content?.slider_products?.status">
+    <div class="container-fluid-lg">
+      <app-four-column-product [data]="data?.content?.slider_products"></app-four-column-product>
+    </div>
+  </section> -->
+
+
+
+
+  <!-- My custom section -2 -->
+
+<section class="overflow-hidden my-pad-sec mt-5">
+
+  <div class="section-main-set container-fluid-lg">
+    <h3>Effortless Everyday Fashion for Women</h3>
+  <p class="pt-2">Explore our handpicked collection of chic and comfortable styles that suit every mood and moment. From casual embroidered sets to modern fusion drapes, our range blends style with ease. Whether you're stepping out for brunch or lounging at home, find outfits that are vibrant, versatile, and uniquely you.</p>
+  
+   
+  
+  <div class="grid-container">
+    <div class="grid-item">
+      <a href="/collections?category=women&sortBy=asc">
+        <img src="assets/images/copy-1.png" alt="Crisp Cotton Sarees">
+        <div class="grid-item-title">Chic Embroidered Sets</div>
+      </a>
+    </div>
+    <div class="grid-item">
+      <a href="/collections?category=women&sortBy=asc">
+        <img src="assets/images/copy-2.png" alt="Instant Drape Sarees">
+        <div class="grid-item-title">Elegant Fusion Drapes</div>
+      </a>
+    </div>
+    <div class="grid-item">
+      <a href="/collections?category=women&sortBy=asc">
+        <img src="assets/images/copy-3.png" alt="Gracious Net Sarees">
+        <div class="grid-item-title">Comfy Cotton Coord Sets</div>
+      </a>
+    </div>
+    <div class="grid-item">
+      <a href="/collections?category=women&sortBy=asc">
+        <img src="assets/images/copy-4.png" alt="Luxe Lavender Sarees">
+        <div class="grid-item-title">Statement Red Ensembles</div>
+      </a>
+    </div>
+    <div class="grid-item">
+      <a href="/collections?category=women&sortBy=asc">
+        <img src="assets/images/copy-5.png" alt="Mix & Match Blouses">
+        <div class="grid-item-title">Vibrant Ombre Anarkalis</div>
+      </a>
+    </div>
+  </div>
+  
+ 
+  </div>
+
+</section>
+
+
+<!-- My custom -2 section end  -->
+
+
+
+  <!-- Banner Section Start -->
+  <div class="container-fluid-lg" *ngIf="data?.content?.full_width_banner?.status">
+    <div class="ratio_12" *ngIf="data?.content?.full_width_banner?.status">
+      <app-theme-banner [banners]="data?.content?.full_width_banner" [style]="'full_width'"></app-theme-banner>
+    </div>
+  </div>
+  <!-- Banner Section End -->
+
+  <!-- Product Section Start -->
+  <section class="product-section"
+    *ngIf="data?.content?.products_list_1?.status">
+    <div class="container-fluid-lg">
+      <app-title
+        [title]="data?.content?.products_list_1?.title"
+        [style]="'simple'">
+      </app-title>
+      <app-theme-product
+        class="romehomepageproduct"
+        [productIds]="data?.content?.products_list_1?.product_ids || []"
+        [style]="'horizontal'"
+        [slider]="true"
+        [productStyle]="'product-standard'"
+        [boxClass]="'product-box-bg'"
+        [sliderOption]="productSlider6ItemMargin">
+      </app-theme-product>
+    </div>
+  </section>
+  <!-- Product Section End -->
+
+
+  <!-- custom section start -->
+
+<section class="overflow-hidden">
+
+  <div class="container-fluid-lg">
+    <div class="top-sec">
+      <div class="left-sec col-lg-6">
+        <img src="../../../../assets/images/top-sec.png" alt="">
+      </div>
+      <div class="right-sec col-lg-6">
+        <img src="../../../../assets/images/top-sec-2.png" alt="">
+      </div>
+    </div>
+    <div class="bottom-sec">
+      <div class="col-lg-3 bottom-col">
+        <img src="../../../../assets/images/bottom-1.png" alt="">
+      </div>
+      <div class="col-lg-3  bottom-col">
+        <img src="../../../../assets/images/bottom-2.png" alt="">
+      </div>
+      <div class="col-lg-3  bottom-col">
+        <img src="../../../../assets/images/bottom-3.png" alt="">
+      </div>
+      <div class="col-lg-3  bottom-col">
+        <img src="../../../../assets/images/bottom-4.png" alt="">
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- custom section end  -->
+
+
+  <!-- Blog Section Start -->
+  <section
+    *ngIf="data?.content?.featured_blogs?.status">
+    <div class="container-fluid-lg">
+      <app-title
+        [title]="data?.content?.featured_blogs?.title"
+        [style]="'simple'">
+      </app-title>
+      <app-blog
+        [sliderOption]="customOptionsItem4"
+        [blogIds]="data?.content?.featured_blogs?.blog_ids || []">
+      </app-blog>
+    </div>
+  </section>
+  <!-- Blog Section End -->
+
+  <!-- Brand Section start -->
+  <section class="brand-effect" *ngIf="data?.content?.brands?.brand_ids && data?.content?.brands?.status">
+    <div class="container-fluid-lg">
+      <app-brand [brandIds]="data?.content?.brands?.brand_ids || []"></app-brand>
+    </div>
+  </section>
+  <!-- Brand Section end -->
+
+  <!-- Newsletter Section Start -->
+  <section class="newsletter-section-2 section-b-space" *ngIf="data?.content?.news_letter?.status">
+    <app-newsletter [data]="data?.content?.news_letter!" [style]="'classic'"></app-newsletter>
+  </section>
+  <!-- Newsletter Section End -->
+</div>

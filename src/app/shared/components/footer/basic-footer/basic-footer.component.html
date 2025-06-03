@@ -1,0 +1,96 @@
+<div class="container-fluid-lg">
+    <div class="main-footer section-b-space">
+
+        <div class="col-lg-12 text-center footer-logs">
+            <h2>SLEEKSYNERGY TECH PRIVATE LIMITED</h2>
+            <p><i class="ri-mail-send-line"></i> support &#64; dresswithtrend.com
+            </p>
+            <p><i class="ri-smartphone-line"></i> +91 7505711174</p>
+            <p><i class="ri-home-smile-2-line"></i> UNIT NO 863, 8th FLOOR, GAUR CITY MALL, SECTOR 4, GREATER NOIDA WEST, Noida, Gautam Buddha Nagar, Noida, Uttar Pradesh, India, 201301</p>
+        </div>
+        <div class="row g-md-4 g-3">
+
+
+            <div class="col-xl-3 col-lg-3 col-sm-3"
+            (click)="toggle('useful_link')">
+            <div class="footer-title" [class.show]="active['useful_link']">
+                <h4>{{ 'Useful Links' | translate }}</h4>
+            </div>
+            <div class="footer-contain">
+                <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
+                 <ul>
+                    <li><a href="/aboutus">About Us</a></li>
+                    <li><a href="/Contact-Us">Contact Us</a></li>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/term-condition">Terms and Conditions</a></li>
+                    <li><a href="/shipping-delivery">Shipping + delivery</a></li>
+                    <li><a href="/return-exchange">Return + Exchange</a></li>
+                    <li><a href="/Refund-and-Cancellation-Policy">Refund and Cancellation Policy</a></li>
+                 </ul>
+                <!-- No Data -->
+                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
+            </div>
+        </div>
+
+
+
+            <div class="col-xl-3 col-sm-3"
+            (click)="toggle('help_center')">
+            <div class="footer-title" [class.show]="active['help_center']">
+                <h4>{{ 'Help Center' | translate }}</h4>
+            </div>
+            <div class="footer-contain">
+                <app-footer-links [links]="data?.footer?.help_center || []"></app-footer-links>
+                <!-- No Data -->
+                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.help_center?.length"></app-no-data>
+            </div>
+        </div>
+
+
+         
+
+          
+        
+        <div class="col-xl-3 col-lg-3 col-sm-6">
+            <div class="footer-title" [class.show]="active['useful_link']">
+                <h4>{{ 'Information' | translate }}</h4>
+            </div>
+            <div class="footer-contain">
+                <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
+                 <ul>
+                    <li><a href="/aboutus">About Us</a></li>
+                    <li><a href="/Contact-Us">Contact Us</a></li>
+                 </ul>
+                <!-- No Data -->
+                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
+            </div>
+        </div>
+
+       
+        
+        
+        <div class="col-xl-3 col-lg-3 col-sm-3">
+           <div class="footer-title">
+            <h4 class="text-white ">About Us</h4>
+           </div>
+            <app-footer-logo [data]="data" [footer]="footer"></app-footer-logo>
+            <p class="f-p">Dress With Trend brings you the latest in fashion with stylish, high-quality clothing for every occasion. Stay trendy, stay confident.
+
+</p>
+        </div>
+            
+            
+          
+          
+        </div>
+    </div>
+    <div class="sub-footer section-small-space">
+        <div class="reserve" *ngIf="data?.footer?.footer_copyright">
+            <app-footer-copyright [data]="data"></app-footer-copyright>
+        </div>
+        <!-- <div class="payment"> 
+            <app-footer-payment-options></app-footer-payment-options>
+        </div> -->
+        <app-footer-social-links [data]="data" *ngIf="data?.footer?.social_media_enable"></app-footer-social-links>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+ .container {
+      display: flex;
+      gap: 30px;
+    }
+    .map-box {
+      flex: 1;
+      border: 5px solid #3F4242;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .map-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .form-box {
+      flex: 1;
+    }
+    .form-box h2 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+    .contact-info {
+      margin-bottom: 30px;
+    }
+    .contact-info p {
+      margin: 5px 0;
+    }
+    .quick-help p {
+      font-size: 14px;
+      margin: 5px 0;
+    }
+    .quick-help a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .form-section input,
+    .form-section select,
+    .form-section textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .form-section textarea {
+      height: 120px;
+      resize: none;
+    }
+    .form-section button {
+      background-color: #000;
+      color: #fff;
+      padding: 12px 25px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .my-contact{
+      margin-top: 70px;
+    }

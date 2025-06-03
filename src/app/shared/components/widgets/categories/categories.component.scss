@@ -1,0 +1,59 @@
+// Paris theme category box styles
+.category-box.category-dark.cat-main-box {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); // Dark overlay for better contrast with white text
+    z-index: 1;
+    pointer-events: none; // This ensures clicks pass through to the link
+  }
+
+  .background-image {
+    visibility: visible;
+    opacity: 1;
+    z-index: 0;
+  }
+
+  img:not(.background-image) {
+    position: relative;
+    z-index: 2; // Increased z-index to appear above the overlay
+    filter: brightness(0) invert(1); // This makes the icon white
+  }
+
+  h5 {
+    position: relative;
+    z-index: 2; // Increased z-index to appear above the overlay
+    color: #ffffff !important; // Force white color
+    font-weight: 600; // Make text slightly bolder for better visibility
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); // Add subtle text shadow for better readability
+  }
+
+  &:hover {
+    .background-image {
+      opacity: 0.8;
+    }
+    
+    &::before {
+      background-color: rgba(0, 0, 0, 0.4); // Slightly darker on hover
+    }
+
+    h5 {
+      color: #ffffff !important;
+    }
+  }
+}
+
+.category-box {
+  height: 230px;
+  align-items: center !important;
+  border: 4px solid #c4baa5;
+  display: flex !important;
+  justify-content: center !important;
+  flex-direction: column !important;
+}
