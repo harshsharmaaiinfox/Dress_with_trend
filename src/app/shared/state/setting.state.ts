@@ -62,7 +62,7 @@ export class SettingState {
               },
               {
                 name: 'cash_free',
-                status: true,
+                status: false,
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
