@@ -21,7 +21,10 @@
                                 <div class="col-md-4">
                                     <div class="mb-3 form-box">
                                         <label for="name" class="form-label">{{ 'Name' | translate }}</label>
-                                        <input type="text" class="form-control" formControlName="name" placeholder="{{ 'Enter Name' | translate }}" id="name">
+                                        <input type="text" class="form-control" formControlName="name" 
+                                               placeholder="{{ 'Enter Name' | translate }}" id="name"
+                                               (input)="onNameInput($event)"
+                                               (keypress)="onNameKeyPress($event)">
                                         <div class="invalid-feedback"
                                             *ngIf="form?.controls?.['name']?.touched && form.controls['name']?.errors?.['required']">
                                             {{ 'Name Is Required' | translate }}
@@ -90,7 +93,10 @@
                                     <div class="col-md-12">
                                         <div class="mb-3 form-box">
                                             <label for="sname" class="form-label">{{ 'Title' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="title" id="sname" placeholder="{{ 'Enter Name' | translate }}">
+                                            <input type="text" class="form-control" formControlName="title" 
+                                                   id="sname" placeholder="{{ 'Enter Name' | translate }}"
+                                                   (input)="onNameInput($event)"
+                                                   (keypress)="onNameKeyPress($event)">
                                             <div *ngIf="form.get('shipping_address.title')?.touched && form.get('shipping_address.title')?.errors?.['required']" class="invalid-feedback">
                                                 {{ 'Title is Required' | translate }}
                                             </div>
@@ -186,7 +192,10 @@
                                     <div class="col-md-12">
                                         <div class="mb-3 form-box">
                                             <label for="name" class="form-label">{{ 'Title' | translate }}</label>
-                                            <input type="text" class="form-control" formControlName="title" id="name" placeholder="{{ 'Enter Name' | translate }}">
+                                            <input type="text" class="form-control" formControlName="title" 
+                                                   id="name" placeholder="{{ 'Enter Name' | translate }}"
+                                                   (input)="onNameInput($event)"
+                                                   (keypress)="onNameKeyPress($event)">
                                             <div *ngIf="form.get('billing_address.title')?.touched && form.get('billing_address.title')?.errors?.['required']" class="invalid-feedback">
                                                 {{ 'Title is Required' | translate }}
                                             </div>

@@ -15,7 +15,11 @@
                 <div class="col-xxl-12">
                     <div class="">
                         <label class="form-label" for="name">{{ 'full_name' | translate }}</label>
-                        <input class="form-control" id="name" type="text" placeholder="{{ 'enter_name' | translate }}" formControlName="name" />
+                        <input class="form-control" id="name" type="text" 
+                               placeholder="{{ 'enter_name' | translate }}" 
+                               formControlName="name"
+                               (input)="onNameInput($event)"
+                               (keypress)="onNameKeyPress($event)" />
                         <div class="invalid-feedback" *ngIf="form?.controls?.['name']?.touched && form.controls['name']?.errors?.['required']">
                             {{ 'name_is_required' | translate }}
                         </div>

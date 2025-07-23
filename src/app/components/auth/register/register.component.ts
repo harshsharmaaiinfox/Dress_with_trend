@@ -84,6 +84,35 @@ export class RegisterComponent {
     );
   }
 
+  onNameInput(event: any) {
+    const input = event.target;
+    const value = input.value;
+    // Remove any numbers and special characters except letters, spaces, hyphens, apostrophes, and periods
+    const cleanValue = value.replace(/[^a-zA-Z\s\-'\.]/g, '');
+    if (value !== cleanValue) {
+      input.value = cleanValue;
+      this.form.get('name')?.setValue(cleanValue);
+    }
+  }
+
+  onNameKeyPress(event: KeyboardEvent) {
+    const char = String.fromCharCode(event.which);
+    // Allow letters, spaces, hyphens, apostrophes, periods, and backspace/delete
+    const allowedChars = /[a-zA-Z\s\-'\.]/;
+    const isAllowed = allowedChars.test(char) || 
+                     event.key === 'Backspace' || 
+                     event.key === 'Delete' || 
+                     event.key === 'Tab' ||
+                     event.key === 'ArrowLeft' ||
+                     event.key === 'ArrowRight' ||
+                     event.key === 'Home' ||
+                     event.key === 'End';
+    
+    if (!isAllowed) {
+      event.preventDefault();
+    }
+  }
+
   submit() {
     this.form.markAllAsTouched();
     if(this.tnc.invalid){

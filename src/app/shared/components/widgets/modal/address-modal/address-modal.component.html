@@ -12,8 +12,11 @@
         <div class="col-12">
           <div class="">
             <label class="form-label" for="pname">{{ 'Title' | translate }}</label>
-            <input class="form-control" id="title" type="text" placeholder="{{ 'Enter Title' | translate }}"
-              formControlName="title" />
+            <input class="form-control" id="title" type="text" 
+                   placeholder="{{ 'Enter Title' | translate }}"
+                   formControlName="title"
+                   (input)="onTitleInput($event)"
+                   (keypress)="onTitleKeyPress($event)" />
             <div class="invalid-feedback"
               *ngIf="form?.controls?.['title']?.touched && form.controls['title']?.errors?.['required']">
               {{ 'Title is Required' | translate }}

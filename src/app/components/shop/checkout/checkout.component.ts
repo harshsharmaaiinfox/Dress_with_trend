@@ -261,7 +261,41 @@ export class CheckoutComponent {
   }
 
   get productControl(): FormArray {
-    return this.form.get("products") as FormArray;
+    return this.form.get('products') as FormArray;
+  }
+
+  // Name validation methods
+  onNameInput(event: any) {
+    const input = event.target;
+    const value = input.value;
+    // Remove any numbers and special characters except letters, spaces, hyphens, apostrophes, and periods
+    const cleanValue = value.replace(/[^a-zA-Z\s\-'\.]/g, '');
+    if (value !== cleanValue) {
+      input.value = cleanValue;
+      // Update the corresponding form control
+      const formControlName = input.getAttribute('formControlName');
+      if (formControlName) {
+        this.form.get(formControlName)?.setValue(cleanValue);
+      }
+    }
+  }
+
+  onNameKeyPress(event: KeyboardEvent) {
+    const char = String.fromCharCode(event.which);
+    // Allow letters, spaces, hyphens, apostrophes, periods, and navigation keys
+    const allowedChars = /[a-zA-Z\s\-'\.]/;
+    const isAllowed = allowedChars.test(char) || 
+                     event.key === 'Backspace' || 
+                     event.key === 'Delete' || 
+                     event.key === 'Tab' ||
+                     event.key === 'ArrowLeft' ||
+                     event.key === 'ArrowRight' ||
+                     event.key === 'Home' ||
+                     event.key === 'End';
+    
+    if (!isAllowed) {
+      event.preventDefault();
+    }
   }
 
   // private render(isOpen: boolean){

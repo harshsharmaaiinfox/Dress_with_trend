@@ -12,7 +12,10 @@
                         <form class="row g-4 contact" [formGroup]="form" (ngSubmit)="submit()">
                             <div class="col-12">
                                 <div class="form-floating log-in-form">
-                                    <input type="name" class="form-control" id="name" id="name" formControlName="name" placeholder="{{ 'Name' | translate }}">
+                                    <input type="text" class="form-control" id="name" formControlName="name" 
+                                           placeholder="{{ 'Name' | translate }}"
+                                           (input)="onNameInput($event)"
+                                           (keypress)="onNameKeyPress($event)">
                                     <label for="name">{{ 'Full Name' | translate }}</label>
                                     <div *ngIf="form.controls['name'].touched && form.controls['name'].errors?.['required']" class="invalid-feedback">{{ 'name_is_required' | translate }}</div>
                                 </div>
