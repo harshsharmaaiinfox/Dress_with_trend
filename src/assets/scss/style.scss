@@ -1147,7 +1147,6 @@ header .onhover-dropdown .onhover-div.fixed-cart .cart-title a i {
 }
 .checkout-detail {
     margin-top: 10px;
-    border-top: 1px solid #c7c7c7;
 }
 .delivery-items ul {
     flex-direction: row;
@@ -1160,4 +1159,8 @@ header .onhover-dropdown .onhover-div.fixed-cart .cart-title a i {
 }
 .delivery-address-box .form-check {
     display: none !important;
+}
+.right-check li {
+  display: flex;
+  gap: 5px;
 }

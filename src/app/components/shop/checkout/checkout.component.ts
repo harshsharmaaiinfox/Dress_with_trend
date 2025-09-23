@@ -347,6 +347,9 @@ export class CheckoutComponent {
     this.form.controls['payment_method'].setValue(value);
     this.payment_method = value;
     switch (value) {
+      case 'cashfree_sleeksynergy':
+        this.checkout(value);
+        break;
       case 'neoKred':
         // Call Popup for NeoKred QR Code
         this.checkout(value);
@@ -907,6 +910,9 @@ export class CheckoutComponent {
         })
       ).subscribe({
         next: (result) => {
+          if(this.payment_method === 'cashfree_sleeksynergy'){
+            this.initiateSleekSynergyPaymentIntent(this.payment_method, uuid, result);
+          }
           if(this.payment_method === 'cash_free'){
             this.initiateCashFreePaymentIntent(this.payment_method, uuid, result);
           }
@@ -941,6 +947,90 @@ export class CheckoutComponent {
         control?.markAsTouched();
       });
     }
+  }
+
+  // Sleek Synergy Payment Integration
+  initiateSleekSynergyPaymentIntent(payment_method: string, uuid: any, order_result: any) {
+    const userData = localStorage.getItem('account');
+    const parsedUserData = JSON.parse(userData || '{}')?.user || {};
+
+    const payload = {
+      uuid,
+      ...parsedUserData,
+      checkout: this.storeData?.order?.checkout
+    };
+
+    this.cartService.initiateSleekSynergyIntent({
+      uuid: payload.uuid,
+      email: payload.email,
+      total: this.storeData?.order?.checkout?.total?.total,
+      phone: parsedUserData.phone,
+      name: parsedUserData.name,
+      address: `${parsedUserData.address?.[0]?.city || ''} ${parsedUserData.address?.[0]?.area || ''}`
+    }).subscribe({
+      next: (resp) => {
+        // Avoid duplicate polling
+        this.pollingSubscription && this.pollingSubscription.unsubscribe();
+
+        let attemptedNavigation = false;
+        let paymentWindow: Window | null = null;
+
+        // Common response shapes support
+        const paymentLink = resp?.payment_link || resp?.url || resp?.data?.payment_url || resp?.data?.payment_link;
+
+        if (paymentLink) {
+          // Save session info
+          sessionStorage.setItem('payment_uuid', uuid);
+          sessionStorage.setItem('payment_method', payment_method);
+          sessionStorage.setItem('payment_action', JSON.stringify(this.form.value));
+          localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
+
+          // Prefer same-tab redirect to avoid popup blockers
+          attemptedNavigation = true;
+          window.location.href = paymentLink;
+        } else if (typeof resp?.data === 'string') {
+          const container = document.getElementById('paymentContainer');
+          if (container) {
+            container.innerHTML = resp.data;
+            setTimeout(() => {
+              paymentWindow = window.open('', 'PaymentWindow', 'width=600,height=700,resizable=yes,scrollbars=yes');
+              if (paymentWindow) {
+                const formHtml = (container.querySelector('form') as HTMLFormElement)?.outerHTML || '';
+                paymentWindow.document.write(`<html><body>${formHtml}<script>document.getElementById('submitButton')&&document.getElementById('submitButton').click();<\/script></body></html>`);
+                paymentWindow.document.close();
+                attemptedNavigation = true;
+              }
+            }, 500);
+          }
+        }
+
+        // Start polling only if we attempted to navigate to payment
+        if (attemptedNavigation) {
+          this.checkTransactionStatusSleekSynergy(uuid, paymentWindow);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  checkTransactionStatusSleekSynergy(uuid: string, paymentWindow: Window | null) {
+    const poll$ = interval(5000).pipe(
+      switchMap(() => this.cartService.checkTransactionStatusSleekSynergy(uuid, 'cashfree_sleeksynergy')),
+      takeWhile((res: any) => !res?.status, true)
+    );
+
+    this.pollingSubscription = poll$.subscribe({
+      next: (res) => {
+        if (res?.status) {
+          if (paymentWindow && !paymentWindow.closed) paymentWindow.close();
+          const action = new PlaceOrder(this.form.value);
+          this.store.dispatch(new PlaceOrder(Object.assign({}, action.payload, { uuid, payment_method: 'cashfree_sleeksynergy' })));
+        }
+      },
+      error: (err) => console.error(err)
+    });
   }
 
   paybyqr() {

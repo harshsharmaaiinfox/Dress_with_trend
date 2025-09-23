@@ -1,3 +1,31 @@
 .payment-icon {
     max-width: 175px;
 }
+
+.payment-inline {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    align-items: center;
+}
+
+.payment-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-top: none;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.form-check-input {
+    position: static;
+    margin: 0;
+}
+
+.form-check-label {
+    margin: 0;
+    font-weight: 500;
+}
