@@ -120,47 +120,69 @@
                     <h3 class="fw-semibold mb-3">{{ 'Consumer Details' | translate }}</h3>
                     <div class="customer-detail tracking-wrapper">
                         <ul class="row g-3">
-                            <li class="col-sm-6" *ngIf="order?.billing_address">
+                            <li class="col-sm-6">
                                 <label>{{ 'Billing Address' | translate }}:</label>
-                                <h4 *ngIf="order?.billing_address?.state">
-                                    {{ order.billing_address.street }}
-                                    {{ order.billing_address.city }} {{ order.billing_address.state.name }} {{ order.billing_address.country.name }}
-                                    {{ order.billing_address.pincode }} <br>
-                                    {{ 'phone' | translate }} : +{{ order.billing_address.country_code }} {{ order.billing_address.phone }}
+                                <h4 *ngIf="order?.billing_address; else noBillingAddress">
+                                    <span *ngIf="order.billing_address.street">{{ order.billing_address.street }}<br></span>
+                                    <span *ngIf="order.billing_address.city">{{ order.billing_address.city }}</span>
+                                    <span *ngIf="order.billing_address.state?.name">, {{ order.billing_address.state.name }}</span>
+                                    <span *ngIf="order.billing_address.country?.name">, {{ order.billing_address.country.name }}</span>
+                                    <span *ngIf="order.billing_address.pincode"> - {{ order.billing_address.pincode }}</span>
+                                    <br *ngIf="order.billing_address.country_code || order.billing_address.phone">
+                                    <span *ngIf="order.billing_address.country_code || order.billing_address.phone">
+                                        {{ 'phone' | translate }} : 
+                                        <span *ngIf="order.billing_address.country_code">+{{ order.billing_address.country_code }}</span>
+                                        <span *ngIf="order.billing_address.phone">{{ order.billing_address.phone }}</span>
+                                    </span>
                                 </h4>
+                                <ng-template #noBillingAddress>
+                                    <h4 class="text-muted">No billing address available</h4>
+                                </ng-template>
                             </li>
-                            <li class="col-sm-6" *ngIf="order?.shipping_address && !order?.is_digital_only">
+                            <li class="col-sm-6" *ngIf="!order?.is_digital_only">
                                 <label>{{ 'Shipping Address' | translate }}:</label>
-                                <h4 *ngIf="order?.shipping_address?.state">
-                                    {{ order.shipping_address.street }}
-                                    {{ order.shipping_address.city }} {{ order.shipping_address.state.name }} {{ order.shipping_address.country.name }}
-                                    {{ order.shipping_address.pincode }} <br>
-                                    {{ 'Phone' | translate }} : +{{ order.shipping_address.country_code }} {{ order.shipping_address.phone }}
+                                <h4 *ngIf="order?.shipping_address; else noShippingAddress">
+                                    <span *ngIf="order.shipping_address.street">{{ order.shipping_address.street }}<br></span>
+                                    <span *ngIf="order.shipping_address.city">{{ order.shipping_address.city }}</span>
+                                    <span *ngIf="order.shipping_address.state?.name">, {{ order.shipping_address.state.name }}</span>
+                                    <span *ngIf="order.shipping_address.country?.name">, {{ order.shipping_address.country.name }}</span>
+                                    <span *ngIf="order.shipping_address.pincode"> - {{ order.shipping_address.pincode }}</span>
+                                    <br *ngIf="order.shipping_address.country_code || order.shipping_address.phone">
+                                    <span *ngIf="order.shipping_address.country_code || order.shipping_address.phone">
+                                        {{ 'Phone' | translate }} : 
+                                        <span *ngIf="order.shipping_address.country_code">+{{ order.shipping_address.country_code }}</span>
+                                        <span *ngIf="order.shipping_address.phone">{{ order.shipping_address.phone }}</span>
+                                    </span>
                                 </h4>
+                                <ng-template #noShippingAddress>
+                                    <h4 class="text-muted">No shipping address available</h4>
+                                </ng-template>
                             </li>
-                            <li class="col-sm-6" *ngIf="order?.delivery_description && !order?.is_digital_only">
+                            <li class="col-sm-12" *ngIf="order?.delivery_description && !order?.is_digital_only">
                                 <label>{{ 'Delivery Slot' | translate }}:</label>
-                                  <h4>Standard Delivery | Approx 10 to 15 Days</h4>
+                                <h4>Standard Delivery | Approx 10 to 15 Days</h4>
                             </li>
-                            <li class="col-sm-3" *ngIf="order?.payment_method">
+                            <li class="col-sm-6">
                                 <label>{{ 'Payment Mode' | translate }}:</label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <!-- <h4>{{order.payment_method | uppercase }}</h4> -->
-                                    <h4 *ngIf="order?.payment_method === 'fashionwithtrends_neokred'">NeoKred</h4>
-                                    <h4 *ngIf="order?.payment_method === 'gaonvashi_cashfree'">Cash Free</h4>
-                                    <!-- <h4 *ngIf="order?.payment_method === 'zyaada_pay'">Suraj Cash Free</h4>
-                                    <h4 *ngIf="order?.payment_method === 'neoKred'">Fashion with Trends NeoKred</h4>
-                                    <h4 *ngIf="order?.payment_method === 'cash_free'">Cash Free</h4>
-                                    <h4 *ngIf="order?.payment_method === 'sub_paisa'">Sab Paisa</h4>
-                                    <h4 *ngIf="order?.payment_method === 'ease_buzz'">Ease Buzz</h4>
-                                    <h4 *ngIf="order?.payment_method === 'zyaada_pay_gaj'">Zyaada Pay Gaj</h4>
-                                    <h4 *ngIf="order?.payment_method === 'gaj_neokred'">Gaj Laxmi NeoKred</h4> -->
+                                    <h4 *ngIf="order?.payment_method; else noPaymentMethod">
+                                        <span *ngIf="order?.payment_method === 'cashfree_sleeksynergy'">Cash Free</span>
+                                        <span *ngIf="order?.payment_method !== 'cashfree_sleeksynergy'">{{ order?.payment_method | titlecase }}</span>
+                                    </h4>
+                                    <ng-template #noPaymentMethod>
+                                        <h4 class="text-muted">No payment method available</h4>
+                                    </ng-template>
                                 </div>
                             </li>
-                            <li class="col-sm-3" *ngIf="order?.payment_method">
+                            <li class="col-sm-6">
                                 <label>{{ 'Payment Status' | translate }}:</label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <h4>{{ order.payment_status | uppercase }}</h4>
+                                    <h4 *ngIf="order?.payment_status; else noPaymentStatus">
+                                        {{ order.payment_status | uppercase }}
+                                    </h4>
+                                    <ng-template #noPaymentStatus>
+                                        <h4 class="text-muted">No payment status available</h4>
+                                    </ng-template>
                                 </div>
                             </li>
                         </ul>
