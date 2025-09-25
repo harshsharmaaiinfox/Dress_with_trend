@@ -22,16 +22,12 @@
                         <td>{{ order?.total | currencySymbol }} </td>
                         <td><div class="status-{{order?.payment_status?.toLowerCase()}}"><span>{{ order?.payment_status | titleCase }}</span></div></td>
                         <td>
-                            <!-- {{ order?.payment_method?.toUpperCase() }} -->
-                              <span *ngIf="order?.payment_method === 'fashionwithtrends_neokred'">NeoKred</span>
-                              <span *ngIf="order?.payment_method === 'gaonvashi_cashfree'">Cash Free</span>
-                              <!-- <span *ngIf="order?.payment_method === 'zyaada_pay'">Suraj Cash Free</span>
-                              <span *ngIf="order?.payment_method === 'neoKred'">Fashion with Trends NeoKred</span>
-                              <span *ngIf="order?.payment_method === 'cash_free'">Cash Free</span>
-                              <span *ngIf="order?.payment_method === 'sub_paisa'">Sab Paisa</span>
-                              <span *ngIf="order?.payment_method === 'ease_buzz'">Ease Buzz</span>
-                              <span *ngIf="order?.payment_method === 'zyaada_pay_gaj'">Zyaada Pay Gaj</span>
-                              <span *ngIf="order?.payment_method === 'gaj_neokred'">Gaj Laxmi NeoKred</span> -->
+                            <ng-container [ngSwitch]="order?.payment_method?.toLowerCase()">
+                                <span *ngSwitchCase="'fashionwithtrends_neokred'">NeoKred</span>
+                                <span *ngSwitchCase="'gaonvashi_cashfree'">Cash Free</span>
+                                <span *ngSwitchCase="'cashfree_sleeksynergy'">Cash Free</span>
+                                <span *ngSwitchDefault>{{ order?.payment_method | titlecase }}</span>
+                            </ng-container>
                         </td>
                         <td><a [routerLink]="['/account/order/details', order.order_number]"><i class="ri-eye-line"></i></a></td>
                     </tr>
