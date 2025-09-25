@@ -24,6 +24,7 @@ export class ProductService {
   }
 
   getProductBySearch(payload?: Params): Observable<any> {
-    return this.http.get<any>(`${environment.URL}/product/minify/list`, { params: payload });
+    const params = { ...(payload || {}), store_id: (payload && payload['store_id'] !== undefined) ? payload['store_id'] : 25 };
+    return this.http.get<any>(`${environment.URL}/product/minify/list`, { params });
   }
 }
