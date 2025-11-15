@@ -350,6 +350,9 @@ export class CheckoutComponent {
       case 'cashfree_sleeksynergy':
         this.checkout(value);
         break;
+      case 'sleeksynergy_starpaisa':
+        this.checkout(value);
+        break;
       case 'neoKred':
         // Call Popup for NeoKred QR Code
         this.checkout(value);
@@ -913,6 +916,9 @@ export class CheckoutComponent {
           if(this.payment_method === 'cashfree_sleeksynergy'){
             this.initiateSleekSynergyPaymentIntent(this.payment_method, uuid, result);
           }
+          if(this.payment_method === 'sleeksynergy_starpaisa'){
+            this.initiateSleekSynergyStarPaisaPaymentIntent(this.payment_method, uuid, result);
+          }
           if(this.payment_method === 'cash_free'){
             this.initiateCashFreePaymentIntent(this.payment_method, uuid, result);
           }
@@ -1006,7 +1012,7 @@ export class CheckoutComponent {
 
         // Start polling only if we attempted to navigate to payment
         if (attemptedNavigation) {
-          this.checkTransactionStatusSleekSynergy(uuid, paymentWindow);
+          this.checkTransactionStatusSleekSynergy(uuid, paymentWindow, payment_method);
         }
       },
       error: (err) => {
@@ -1015,9 +1021,69 @@ export class CheckoutComponent {
     });
   }
 
-  checkTransactionStatusSleekSynergy(uuid: string, paymentWindow: Window | null) {
+  initiateSleekSynergyStarPaisaPaymentIntent(payment_method: string, uuid: any, order_result: any) {
+    const userData = localStorage.getItem('account');
+    const parsedUserData = JSON.parse(userData || '{}')?.user || {};
+
+    const payload = {
+      uuid,
+      ...parsedUserData,
+      checkout: this.storeData?.order?.checkout
+    };
+
+    this.cartService.initiateSleekSynergyStarPaisaIntent({
+      uuid: payload.uuid,
+      email: payload.email,
+      total: this.storeData?.order?.checkout?.total?.total,
+      phone: parsedUserData.phone,
+      name: parsedUserData.name,
+      address: `${parsedUserData.address?.[0]?.city || ''} ${parsedUserData.address?.[0]?.area || ''}`
+    }).subscribe({
+      next: (resp) => {
+        this.pollingSubscription && this.pollingSubscription.unsubscribe();
+
+        let attemptedNavigation = false;
+        let paymentWindow: Window | null = null;
+
+        const paymentLink = resp?.payment_link || resp?.url || resp?.data?.payment_url || resp?.data?.payment_link;
+
+        if (paymentLink) {
+          sessionStorage.setItem('payment_uuid', uuid);
+          sessionStorage.setItem('payment_method', payment_method);
+          sessionStorage.setItem('payment_action', JSON.stringify(this.form.value));
+          localStorage.setItem('order_id', JSON.stringify(order_result.order_number));
+
+          attemptedNavigation = true;
+          window.location.href = paymentLink;
+        } else if (typeof resp?.data === 'string') {
+          const container = document.getElementById('paymentContainer');
+          if (container) {
+            container.innerHTML = resp.data;
+            setTimeout(() => {
+              paymentWindow = window.open('', 'PaymentWindow', 'width=600,height=700,resizable=yes,scrollbars=yes');
+              if (paymentWindow) {
+                const formHtml = (container.querySelector('form') as HTMLFormElement)?.outerHTML || '';
+                paymentWindow.document.write(`<html><body>${formHtml}<script>document.getElementById('submitButton')&&document.getElementById('submitButton').click();<\/script></body></html>`);
+                paymentWindow.document.close();
+                attemptedNavigation = true;
+              }
+            }, 500);
+          }
+        }
+
+        if (attemptedNavigation) {
+          this.checkTransactionStatusSleekSynergy(uuid, paymentWindow, payment_method);
+        }
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  checkTransactionStatusSleekSynergy(uuid: string, paymentWindow: Window | null, payment_method: string = 'cashfree_sleeksynergy') {
     const poll$ = interval(5000).pipe(
-      switchMap(() => this.cartService.checkTransactionStatusSleekSynergy(uuid, 'cashfree_sleeksynergy')),
+      switchMap(() => this.cartService.checkTransactionStatusSleekSynergy(uuid, payment_method)),
       takeWhile((res: any) => !res?.status, true)
     );
 
@@ -1026,7 +1092,7 @@ export class CheckoutComponent {
         if (res?.status) {
           if (paymentWindow && !paymentWindow.closed) paymentWindow.close();
           const action = new PlaceOrder(this.form.value);
-          this.store.dispatch(new PlaceOrder(Object.assign({}, action.payload, { uuid, payment_method: 'cashfree_sleeksynergy' })));
+          this.store.dispatch(new PlaceOrder(Object.assign({}, action.payload, { uuid, payment_method })));
         }
       },
       error: (err) => console.error(err)
