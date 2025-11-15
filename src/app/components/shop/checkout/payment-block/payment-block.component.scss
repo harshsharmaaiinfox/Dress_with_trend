@@ -4,7 +4,7 @@
 
 .payment-inline {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 16px;
     align-items: center;
 }
@@ -15,9 +15,11 @@
     gap: 8px;
     padding: 8px 12px;
     border: 1px solid #e5e7eb;
-    border-top: none;
     border-radius: 8px;
     background: #fff;
+    min-width: 210px;
+    min-height: 64px;
+    flex: 0 0 auto;
 }
 
 .form-check-input {

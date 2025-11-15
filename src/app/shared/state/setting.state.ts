@@ -78,18 +78,19 @@ export class SettingState {
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
-              {
-                name: 'cashfree_sleeksynergy',
-                status: true,
-                title: 'Sleek Synergy',
-                icon: './assets/images/cash_free.jpg',
-              },
+              
               {
                 name: 'sleeksynergy_starpaisa',
                 status: true,
                 title: 'Pay By UPI INTENT',
+                // icon: './assets/images/cash_free.jpg',
+              },
+              {
+                name: 'cashfree_sleeksynergy',
+                status: true,
+                title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
-              }
+              },
             ];
              customValue.general.site_name = "Your Dream Fashion"
             customValue.payment_methods = customPayments //[result.values.payment_methods[0]];
