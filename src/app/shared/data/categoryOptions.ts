@@ -4,7 +4,7 @@ export const ThemeCategoryOptions = {
     {
         "id": 69,
         "name": "Cold Season Edit",
-        "slug": "Cold Season Edit",
+        "slug": "winter-collections",
         "meta_title": null,
         "meta_description": null,
         "category_meta_image_id": null,
