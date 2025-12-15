@@ -61,6 +61,7 @@ export class CategoriesComponent {
     'sunglasses': '../assets/images/cat-image-sunglasses.png',
     'fashion': '../assets/images/cat-image-collection.png',
     'women': '../assets/images/cat-image-women.png',
+    'winter-collections': '../assets/images/category-imagge.png',
   };
 
   // Custom background images for Paris theme categories
@@ -70,6 +71,7 @@ export class CategoriesComponent {
     'sunglasses': 'assets/images/cat-image-sunglasses.png',
     'fashion': 'assets/images/cat-image-collection.png',
     'women': 'assets/images/category-main.jpg',
+    'Cold Season Edit': 'assets/images/category-imagge.png',
   };
 
   // Method to get background image for Paris theme
