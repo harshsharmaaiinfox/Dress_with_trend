@@ -18,9 +18,9 @@ export class CollectionPriceFilterComponent implements OnChanges {
   @Select(SettingState.selectedCurrency) selectedCurrency$: Observable<Currency>;
 
   public minPrice: number = 0;
-  public maxPrice: number = 5000;
+  public maxPrice: number = 15000;
   public minValue: number = 0;
-  public maxValue: number = 5000;
+  public maxValue: number = 15000;
   public currencySymbol: string = '₹';
 
   constructor(private route: ActivatedRoute,
