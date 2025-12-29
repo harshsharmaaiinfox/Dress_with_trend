@@ -1,33 +1,27 @@
-import { Component, Input, OnChanges, SimpleChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Params } from '../../../../../../shared/interface/core.interface';
 import { Select } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SettingState } from '../../../../../../shared/state/setting.state';
 import { Currency } from '../../../../../../shared/interface/currency.interface';
-import { ProductState } from '../../../../../../shared/state/product.state';
-import { ProductModel, Product } from '../../../../../../shared/interface/product.interface';
 
 @Component({
   selector: 'app-collection-price-filter',
   templateUrl: './collection-price-filter.component.html',
   styleUrls: ['./collection-price-filter.component.scss']
 })
-export class CollectionPriceFilterComponent implements OnChanges, OnInit, OnDestroy {
+export class CollectionPriceFilterComponent implements OnChanges {
 
   @Input() filter: Params;
 
   @Select(SettingState.selectedCurrency) selectedCurrency$: Observable<Currency>;
-  @Select(ProductState.product) product$: Observable<ProductModel>;
 
   public minPrice: number = 0;
-  public maxPrice: number = 7000;
+  public maxPrice: number = 15000;
   public minValue: number = 0;
-  public maxValue: number = 7000;
+  public maxValue: number = 15000;
   public currencySymbol: string = '₹';
-
-  private productSubscription: Subscription;
-  private defaultMaxPrice: number = 7000;
 
   constructor(private route: ActivatedRoute,
     private router: Router) {
@@ -36,65 +30,12 @@ export class CollectionPriceFilterComponent implements OnChanges, OnInit, OnDest
     });
   }
 
-  ngOnInit() {
-    this.productSubscription = this.product$.subscribe(productModel => {
-      this.calculateMaxPriceFromProducts(productModel?.data || []);
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.productSubscription) {
-      this.productSubscription.unsubscribe();
-    }
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['filter'] && this.filter?.['price']) {
       this.parsePriceFilter(this.filter['price']);
     } else {
       this.minPrice = this.minValue;
       this.maxPrice = this.maxValue;
-    }
-  }
-
-  private calculateMaxPriceFromProducts(products: Product[]) {
-    if (!products || products.length === 0) {
-      this.maxValue = this.defaultMaxPrice;
-      this.maxPrice = this.defaultMaxPrice;
-      return;
-    }
-
-    let maxProductPrice = 0;
-
-    products.forEach(product => {
-      // Consider both regular price and sale price
-      const prices = [product.price];
-
-      if (product.sale_price && product.sale_price > 0) {
-        prices.push(product.sale_price);
-      }
-
-      // Check variations for additional prices
-      if (product.variations && product.variations.length > 0) {
-        product.variations.forEach(variation => {
-          prices.push(variation.price);
-          if (variation.sale_price && variation.sale_price > 0) {
-            prices.push(variation.sale_price);
-          }
-        });
-      }
-
-      const highestPrice = Math.max(...prices);
-      maxProductPrice = Math.max(maxProductPrice, highestPrice);
-    });
-
-    // Set a minimum max price if no products found
-    this.maxValue = maxProductPrice > 0 ? Math.ceil(maxProductPrice) : this.defaultMaxPrice;
-    this.maxPrice = this.maxValue;
-
-    // Reset min price if it's greater than the new max
-    if (this.minPrice > this.maxValue) {
-      this.minPrice = this.minValue;
     }
   }
 
