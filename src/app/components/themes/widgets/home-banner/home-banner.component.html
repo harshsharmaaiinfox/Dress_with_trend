@@ -5,9 +5,9 @@
         <owl-carousel-o #owlCarousel [options]="heroSliderOptions">
           <ng-container *ngFor="let image of sliderImages; let i = index">
             <ng-template carouselSlide [id]="'slide-' + i">
-              <div class="hero-slide-item" onclick="window.location.href='collections?category=women&sortBy=asc'">
+              <a class="hero-slide-item" [routerLink]="['/collections']" [queryParams]="{ category: 'winter-collections', sortBy: 'asc' }">
                 <img [src]="image" class="img-fluid" [alt]="'Hero slide ' + (i + 1)" />
-              </div>
+              </a>
             </ng-template>
           </ng-container>
         </owl-carousel-o>

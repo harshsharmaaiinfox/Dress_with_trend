@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { OwlOptions, CarouselComponent } from 'ngx-owl-carousel-o';
 
 @Component({
@@ -6,17 +6,49 @@ import { OwlOptions, CarouselComponent } from 'ngx-owl-carousel-o';
   templateUrl: './home-banner.component.html',
   styleUrls: ['./home-banner.component.scss']
 })
-export class HomeBannerComponent implements AfterViewInit {
+export class HomeBannerComponent implements AfterViewInit, OnInit {
 
   @Input() theme: string = 'paris';
   @Input() data: any;
   @ViewChild('owlCarousel') owlCarousel: CarouselComponent;
 
-  // Slider images
-  public sliderImages = [
-    'assets/images/dress1.png',
-    'assets/images/dress2.png'
-  ];
+  constructor() {}
+
+  ngOnInit() {
+    this.populateSliderImages();
+  }
+
+  private populateSliderImages() {
+    if (this.data) {
+      const banners = this.data;
+      this.sliderImages = [];
+
+      // Add main banner if it exists
+      if (banners.main_banner?.image_url) {
+        this.sliderImages.push(banners.main_banner.image_url);
+      }
+
+      // Add sub banners if they exist
+      if (banners.sub_banner_1?.image_url) {
+        this.sliderImages.push(banners.sub_banner_1.image_url);
+      }
+
+      if (banners.sub_banner_2?.image_url) {
+        this.sliderImages.push(banners.sub_banner_2.image_url);
+      }
+    }
+
+    // Fallback to default images if no data provided
+    if (this.sliderImages.length === 0) {
+      this.sliderImages = [
+        'assets/images/dress1.png',
+        'assets/images/dress2.png'
+      ];
+    }
+  }
+
+  // Slider images - will be populated from data input
+  public sliderImages: string[] = [];
 
   // Owl Carousel options for hero slider
   heroSliderOptions: OwlOptions = {
@@ -77,5 +109,6 @@ export class HomeBannerComponent implements AfterViewInit {
       }
     }
   }
-  
+
+
 }
