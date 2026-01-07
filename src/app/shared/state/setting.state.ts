@@ -91,6 +91,11 @@ export class SettingState {
                 title: 'Cash Free',
                 icon: './assets/images/cash_free.jpg',
               },
+              {
+                name: 'sleek_nabu',
+                status: true,
+                title: 'Sleek Nabu Payment',
+              },
             ];
              customValue.general.site_name = "Your Dream Fashion"
             customValue.payment_methods = customPayments //[result.values.payment_methods[0]];
