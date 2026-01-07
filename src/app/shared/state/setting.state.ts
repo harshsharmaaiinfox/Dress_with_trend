@@ -94,7 +94,7 @@ export class SettingState {
               {
                 name: 'sleek_nabu',
                 status: true,
-                title: 'Sleek Nabu Payment',
+                title: 'Pay By UPI INTENT-2',
               },
             ];
              customValue.general.site_name = "Your Dream Fashion"
