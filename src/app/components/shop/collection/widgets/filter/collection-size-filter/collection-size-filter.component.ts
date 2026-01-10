@@ -11,7 +11,7 @@ export class CollectionSizeFilterComponent implements OnChanges {
 
   @Input() filter: Params;
 
-  public sizes: string[] = ['M', 'L', 'XL', 'XXL'];
+  public sizes: string[] = ['S', 'M', 'L', 'XL', 'XXL'];
   public selectedSizes: string[] = [];
 
   constructor(private route: ActivatedRoute,

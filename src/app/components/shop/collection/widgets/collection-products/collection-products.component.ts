@@ -16,7 +16,7 @@ import { StoresModel } from '../../../../../shared/interface/store.interface';
 })
 export class CollectionProductsComponent {
 
-  @Select(ProductState.product) product$: Observable<ProductModel>;
+  @Select(ProductState.filteredProduct) product$: Observable<ProductModel>;
   @Select(ThemeOptionState.themeOptions) themeOption$: Observable<Option>;
 
   @Input() filter: Params;
