@@ -1,4 +1,5 @@
 import { Component, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Attribute, AttributeValue } from '../../../interface/attribute.interface';
@@ -32,21 +33,31 @@ export class VariantAttributesComponent {
   public selectedVariation: Variation | null;
   public break: boolean = false;
 
+  constructor(private route: ActivatedRoute) {}
+
   ngOnChanges(changes: SimpleChanges) {
     setTimeout(() => {
       if(changes['product'] && changes['product'].currentValue) {
         this.product = changes['product']?.currentValue;
       }
-  
+
       if(changes['attributes'] && changes['attributes'].currentValue) {
         this.attributes = changes['attributes']?.currentValue;
       }
-  
+
       this.cartItem$.subscribe(items => {
         this.cartItem = items.find(item => item.product.id == this.product.id)!;
       });
-  
+
       this.checkVariantAvailability(this.product);
+
+      // Auto-select size from URL parameter
+      this.route.queryParams.subscribe(params => {
+        const sizeParam = params['size'];
+        if (sizeParam && this.product && this.attributes) {
+          this.autoSelectSizeFromUrl(sizeParam);
+        }
+      });
     }, 0);
 
     if(changes['showPrice']?.currentValue) {
@@ -179,5 +190,39 @@ export class VariantAttributesComponent {
     this.selectVariation.emit(this.selectedVariation);
   }
 
-  
+  autoSelectSizeFromUrl(sizeParam: string) {
+    if (!sizeParam || !this.product || !this.attributes) return;
+
+    const selectedSizes = sizeParam.split(',');
+    let sizeAttribute: Attribute | undefined;
+
+    // Find size attribute (assuming it contains size values like M, L, XL, XXL)
+    for (const attribute of this.attributes) {
+      const hasSizeValues = attribute.attribute_values.some(value =>
+        selectedSizes.includes(value.value.toUpperCase()) ||
+        selectedSizes.includes(value.value)
+      );
+      if (hasSizeValues) {
+        sizeAttribute = attribute;
+        break;
+      }
+    }
+
+    if (sizeAttribute) {
+      // Find the first matching size value
+      for (const selectedSize of selectedSizes) {
+        const matchingValue = sizeAttribute.attribute_values.find(value =>
+          value.value.toUpperCase() === selectedSize.toUpperCase() ||
+          value.value === selectedSize
+        );
+
+        if (matchingValue && this.attributeValues.includes(matchingValue.id)) {
+          // Auto-select this size variant
+          this.setVariant(this.product.variations, matchingValue);
+          break; // Select the first matching size
+        }
+      }
+    }
+  }
+
 }
