@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Allow access to CSS, JS, and images for proper rendering
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.ico
+Allow: *.woff
+Allow: *.woff2
+Allow: *.ttf
+Allow: *.eot
+
+# Sitemap
+Sitemap: https://dresswithtrend.com/sitemap.xml
