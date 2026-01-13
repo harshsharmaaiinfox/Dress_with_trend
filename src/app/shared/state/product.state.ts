@@ -12,6 +12,10 @@ export class ProductStateModel {
     data: [] as Product[],
     total: 0
   }
+  filteredProduct = {
+    data: [] as Product[],
+    total: 0
+  }
   selectedProduct: Product | null;
   categoryProducts: Product[] | [];
   relatedProducts: Product[] | [];
@@ -26,6 +30,10 @@ export class ProductStateModel {
   name: "product",
   defaults: {
     product: {
+      data: [],
+      total: 0
+    },
+    filteredProduct: {
       data: [],
       total: 0
     },
@@ -48,6 +56,11 @@ export class ProductState {
   @Selector()
   static product(state: ProductStateModel) {
     return state.product;
+  }
+
+  @Selector()
+  static filteredProduct(state: ProductStateModel) {
+    return state.filteredProduct.data.length > 0 ? state.filteredProduct : state.product;
   }
 
   @Selector()
@@ -97,10 +110,33 @@ export class ProductState {
     return this.productService.getProducts(action.payload).pipe(
       tap({
         next: (result: ProductModel) => {
+          const originalData = result.data;
+          let filteredData = originalData;
+          let filteredTotal = result?.total ? result?.total : result.data?.length;
+
+          // Apply size filtering on frontend
+          const sizeParam = action.payload && action.payload['size'];
+          if (sizeParam && typeof sizeParam === 'string' && sizeParam.trim()) {
+            const selectedSizes = sizeParam.split(',').map((size: string) => size.trim().toUpperCase());
+            filteredData = originalData.filter(product => {
+              // Check if product has variations with the selected sizes
+              return product.variations && product.variations.some(variation => {
+                return variation.attribute_values && variation.attribute_values.some(attrValue => {
+                  return selectedSizes.includes(attrValue.value.toUpperCase());
+                });
+              });
+            });
+            filteredTotal = filteredData.length;
+          }
+
           ctx.patchState({
             product: {
-              data: result.data,
+              data: originalData,
               total: result?.total ? result?.total : result.data?.length
+            },
+            filteredProduct: {
+              data: filteredData,
+              total: filteredTotal
             }
           });
         },
