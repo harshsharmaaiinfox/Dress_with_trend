@@ -1,16 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Home -->
+    <url>
+        <loc>https://dresswithtrend.com/</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>1.0</priority>
+        <changefreq>daily</changefreq>
+    </url>
+
+    <!-- Main Sections -->
+    <url>
+        <loc>https://dresswithtrend.com/collections</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.9</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/offers</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.9</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/search</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+
+    <!-- Static Pages -->
+    <url>
+        <loc>https://dresswithtrend.com/about-us</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.8</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/contact-us</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.8</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/faq</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.7</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+
+    <!-- Legal & Policy Pages -->
+    <url>
+        <loc>https://dresswithtrend.com/privacy-policy</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/term-condition</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/refund-and-cancellation-policy</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/shipping-delevary</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/return-exchange</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>yearly</changefreq>
+    </url>
+
+    <!-- Categories -->
+    <url>
+        <loc>https://dresswithtrend.com/category/women</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.9</priority>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/category/men</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.9</priority>
+        <changefreq>daily</changefreq>
+    </url>
 
 
-<url>
-  <loc>https://dresswithtrend.com/</loc>
-  <lastmod>2026-01-11T11:50:51+00:00</lastmod>
-</url>
-
-
+    <!-- Account & User -->
+    <url>
+        <loc>https://dresswithtrend.com/auth/login</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/auth/register</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://dresswithtrend.com/account/dashboard</loc>
+        <lastmod>2026-01-29T12:00:00+00:00</lastmod>
+        <priority>0.5</priority>
+        <changefreq>weekly</changefreq>
+    </url>
 </urlset>
