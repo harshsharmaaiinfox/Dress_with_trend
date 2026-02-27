@@ -168,7 +168,7 @@
                                     <h4 *ngIf="order?.payment_method; else noPaymentMethod">
                                         <span *ngIf="order?.payment_method === 'cashfree_sleeksynergy'">Cash Free</span>
                                         <span *ngIf="order?.payment_method === 'sleeksynergy_starpaisa'">Pay By UPI INTENT</span>
-                                        <span *ngIf="order?.payment_method !== 'cashfree_sleeksynergy' && order?.payment_method !== 'sleeksynergy_starpaisa'">{{ order?.payment_method | titlecase }}</span>
+                                        <span *ngIf="order?.payment_method !== 'cashfree_sleeksynergy' && order?.payment_method !== 'sleeksynergy_starpaisa'">{{ order.payment_method | titlecase }}</span>
                                     </h4>
                                     <ng-template #noPaymentMethod>
                                         <h4 class="text-muted">No payment method available</h4>
