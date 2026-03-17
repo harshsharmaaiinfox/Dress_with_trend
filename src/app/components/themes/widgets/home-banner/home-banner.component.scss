@@ -31,7 +31,7 @@
         width: 100% !important;
         flex-shrink: 0;
         max-width: 100%;
-        
+
         &.active {
           width: 100% !important;
         }
@@ -43,13 +43,22 @@
       overflow: hidden;
       display: block;
       position: relative;
+      min-height: 400px;
+      background-color: #f8f8f8;
+
+      @media (max-width: 768px) {
+        min-height: 250px;
+      }
 
       img {
         width: 100%;
-        height: auto;
+        height: 100%;
         display: block;
         object-fit: cover;
         max-width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
     }
 

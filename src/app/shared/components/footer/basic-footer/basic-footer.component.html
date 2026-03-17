@@ -6,82 +6,85 @@
             <p><i class="ri-mail-send-line"></i> support &#64; dresswithtrend.com
             </p>
             <p><i class="ri-smartphone-line"></i> +91 7505711174</p>
-            <p><i class="ri-home-smile-2-line"></i> UNIT NO 863, 8th FLOOR, GAUR CITY MALL, SECTOR 4, GREATER NOIDA WEST, Noida, Gautam Buddha Nagar, Noida, Uttar Pradesh, India, 201301</p>
+            <p><i class="ri-home-smile-2-line"></i> UNIT NO 863, 8th FLOOR, GAUR CITY MALL, SECTOR 4, GREATER NOIDA
+                WEST, Noida, Gautam Buddha Nagar, Noida, Uttar Pradesh, India, 201301</p>
         </div>
         <div class="row g-md-4 g-3">
 
 
-            <div class="col-xl-3 col-lg-3 col-sm-3"
-            (click)="toggle('useful_link')">
-            <div class="footer-title" [class.show]="active['useful_link']">
-                <h4>{{ 'Useful Links' | translate }}</h4>
+            <div class="col-xl-3 col-lg-3 col-sm-3" (click)="toggle('useful_link')">
+                <div class="footer-title" [class.show]="active['useful_link']">
+                    <h4>{{ 'Useful Links' | translate }}</h4>
+                </div>
+                <div class="footer-contain">
+                    <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
+                    <ul>
+                        <li><a href="/aboutus">About Us</a></li>
+                        <li><a href="/Contact-Us">Contact Us</a></li>
+                        <li><a href="/privacy-policy">Privacy Policy</a></li>
+                        <li><a href="/term-condition">Terms and Conditions</a></li>
+                        <li><a href="/shipping-delivery">Shipping + delivery</a></li>
+                        <li><a href="/return-exchange">Return + Exchange</a></li>
+                        <li><a href="/Refund-and-Cancellation-Policy">Refund and Cancellation Policy</a></li>
+                    </ul>
+                    <!-- No Data -->
+                    <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'"
+                        *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
+                </div>
             </div>
-            <div class="footer-contain">
-                <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
-                 <ul>
-                    <li><a href="/aboutus">About Us</a></li>
-                    <li><a href="/Contact-Us">Contact Us</a></li>
-                    <li><a href="/privacy-policy">Privacy Policy</a></li>
-                    <li><a href="/term-condition">Terms and Conditions</a></li>
-                    <li><a href="/shipping-delivery">Shipping + delivery</a></li>
-                    <li><a href="/return-exchange">Return + Exchange</a></li>
-                    <li><a href="/Refund-and-Cancellation-Policy">Refund and Cancellation Policy</a></li>
-                 </ul>
-                <!-- No Data -->
-                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
+
+
+
+            <div class="col-xl-3 col-sm-3" (click)="toggle('help_center')">
+                <div class="footer-title" [class.show]="active['help_center']">
+                    <h4>{{ 'Help Center' | translate }}</h4>
+                </div>
+                <div class="footer-contain">
+                    <app-footer-links [links]="data?.footer?.help_center || []"></app-footer-links>
+                    <!-- No Data -->
+                    <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'"
+                        *ngIf="!data?.footer?.help_center?.length"></app-no-data>
+                </div>
             </div>
-        </div>
 
 
 
-            <div class="col-xl-3 col-sm-3"
-            (click)="toggle('help_center')">
-            <div class="footer-title" [class.show]="active['help_center']">
-                <h4>{{ 'Help Center' | translate }}</h4>
+
+
+
+            <div class="col-xl-3 col-lg-3 col-sm-6">
+                <div class="footer-title" [class.show]="active['useful_link']">
+                    <h4>{{ 'Information' | translate }}</h4>
+                </div>
+                <div class="footer-contain">
+                    <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
+                    <ul>
+                        <li><a href="/aboutus">About Us</a></li>
+                        <li><a href="/Contact-Us">Contact Us</a></li>
+                    </ul>
+                    <!-- No Data -->
+                    <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'"
+                        *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
+                </div>
             </div>
-            <div class="footer-contain">
-                <app-footer-links [links]="data?.footer?.help_center || []"></app-footer-links>
-                <!-- No Data -->
-                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.help_center?.length"></app-no-data>
+
+
+
+
+            <div class="col-xl-3 col-lg-3 col-sm-3">
+                <div class="footer-title">
+                    <h4 class="text-white ">About Us</h4>
+                </div>
+                <app-footer-logo [data]="data" [footer]="footer"></app-footer-logo>
+                <p class="f-p">Dress With Trend brings you the latest in fashion with stylish, high-quality clothing for
+                    every occasion. Stay trendy, stay confident.
+
+                </p>
             </div>
-        </div>
 
 
-         
 
-          
-        
-        <div class="col-xl-3 col-lg-3 col-sm-6">
-            <div class="footer-title" [class.show]="active['useful_link']">
-                <h4>{{ 'Information' | translate }}</h4>
-            </div>
-            <div class="footer-contain">
-                <!-- <app-footer-links [links]="data?.footer?.useful_link || []"></app-footer-links> -->
-                 <ul>
-                    <li><a href="/aboutus">About Us</a></li>
-                    <li><a href="/Contact-Us">Contact Us</a></li>
-                 </ul>
-                <!-- No Data -->
-                <app-no-data [class]="'no-data-footer'" [text]="'no_link_found'" *ngIf="!data?.footer?.useful_link?.length"></app-no-data>
-            </div>
-        </div>
 
-       
-        
-        
-        <div class="col-xl-3 col-lg-3 col-sm-3">
-           <div class="footer-title">
-            <h4 class="text-white ">About Us</h4>
-           </div>
-            <app-footer-logo [data]="data" [footer]="footer"></app-footer-logo>
-            <p class="f-p">Dress With Trend brings you the latest in fashion with stylish, high-quality clothing for every occasion. Stay trendy, stay confident.
-
-</p>
-        </div>
-            
-            
-          
-          
         </div>
     </div>
     <div class="sub-footer section-small-space">
@@ -92,5 +95,72 @@
             <app-footer-payment-options></app-footer-payment-options>
         </div> -->
         <app-footer-social-links [data]="data" *ngIf="data?.footer?.social_media_enable"></app-footer-social-links>
+    </div>
+</div>
+
+<div class="footer-seo-section">
+    <div class="container-fluid-lg">
+        <h2>Online Clothing Store for Trendy Fashion in India</h2>
+        <p><b><a href="https://dresswithtrend.com">Dress With Trend</a></b> is an online clothing store that brings
+            modern fashion and stylish outfits for men and women across India. Our goal is to make trendy clothing
+            accessible to everyone by offering fashion that combines comfort, quality, and contemporary style. Whether
+            you are searching for casual everyday outfits, stylish statement pieces, or comfortable activewear, Dress
+            With Trend provides a wide selection of clothing designed for modern lifestyles.</p>
+        <p>Fashion is constantly evolving, and Dress With Trend focuses on keeping up with the latest trends while
+            ensuring clothing remains comfortable and affordable. With an easy online shopping experience, customers can
+            explore collections, discover new styles, and find outfits that match their personality and fashion
+            preferences.</p>
+
+        <h3>Discover Trendy Clothing for Everyday Style</h3>
+        <p>Shopping for fashionable clothing online should be simple and enjoyable. At Dress With Trend, customers can
+            browse a variety of <b><a href="https://dresswithtrend.com/collections">clothing collections</a></b>
+            designed to suit different occasions and personal styles. Our collections include comfortable everyday wear,
+            stylish casual outfits, and fashionable clothing that reflects the latest trends.</p>
+        <p>Each piece is selected with attention to design, comfort, and fabric quality. Whether you are updating your
+            wardrobe or looking for something new to wear for a special occasion, Dress With Trend offers clothing that
+            balances style with practicality. Our focus is to provide fashion that fits modern lifestyles while
+            remaining affordable and accessible.</p>
+
+        <h3><b><a href="https://dresswithtrend.com/collections?category=women">Women's Fashion</a></b> – Elegant,
+            Stylish & Everyday Clothing</h3>
+        <p>The women’s fashion collection at Dress With Trend features trendy outfits designed to help women express
+            their personal style with confidence. From stylish tops and dresses to comfortable casual wear and
+            fashionable outfits, the collection offers clothing suitable for everyday activities and special occasions.
+        </p>
+        <p>Our women’s clothing combines modern design with comfortable fabrics to ensure both style and ease of wear.
+            Whether you prefer simple everyday fashion or statement outfits that stand out, Dress With Trend offers
+            versatile clothing options that fit different fashion preferences.</p>
+        <p><b><a href="http://dresswithtrend.com/collections?category=women&sortBy=asc">Explore women’s fashion</a></b>
+        </p>
+
+        <h3><b><a href="https://dresswithtrend.com/collections?category=men">Men's Fashion</a></b> – Modern Clothing for
+            Everyday Confidence</h3>
+        <p>Dress With Trend also offers a growing men’s fashion collection that includes stylish shirts, comfortable
+            t-shirts, modern pants, and trendy jackets. These outfits are designed for men who want to look stylish
+            while staying comfortable in their daily routines.</p>
+        <p>The collection focuses on simple yet fashionable designs that work well for casual outings, work settings,
+            and social occasions. With quality fabrics and modern styles, Dress With Trend provides clothing that helps
+            men maintain a confident and fashionable appearance.</p>
+        <p><b><a href="http://dresswithtrend.com/collections?category=men&sortBy=asc">Explore men’s fashion</a></b></p>
+
+        <h3><b><a href="https://dresswithtrend.com/collections?category=activewear">Activewear & Athletic Clothing for
+                    Comfortable Movement</a></b></h3>
+        <p>For customers who prefer flexible and comfortable clothing, Dress With Trend also offers activewear and
+            athletic outfits designed for both men and women. These clothes are made using breathable materials that
+            support movement and comfort during workouts, sports activities, or daily routines.</p>
+        <p>Activewear at Dress With Trend combines functionality with modern fashion, allowing customers to stay active
+            while still looking stylish. Whether you are exercising, relaxing, or running errands, our athleisure
+            clothing offers comfort and versatility.</p>
+
+        <h3>Shop Fashion Online with Dress With Trend</h3>
+        <p>At <b><a href="https://dresswithtrend.com">Dress With Trend</a></b>, fashion is about expressing
+            individuality while staying comfortable and confident. Our brand focuses on bringing stylish clothing that
+            reflects modern trends while remaining affordable for everyday shoppers. We continue to expand our
+            collections to offer more variety, better designs, and clothing that suits the lifestyle of today’s
+            fashion-conscious customers.</p>
+        <p>If you are looking for stylish clothing that combines comfort, modern design, and affordability, Dress With
+            Trend is your destination for online fashion in India. Explore our <b><a
+                    href="https://dresswithtrend.com/collections">collections</a></b> and discover outfits that help you
+            look and feel your best every day.</p>
     </div>
 </div>

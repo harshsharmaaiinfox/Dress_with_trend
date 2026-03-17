@@ -19,33 +19,56 @@
   </section>
   <!-- Category Section End -->
 
+  <!-- Hero Content Section Start -->
+  <section class="home-hero-content-section">
+    <div class="container-fluid-lg">
+      <div class="hero-content-inner">
+        <h1>Trendy Online Clothing for Men &amp; Women</h1>
+        <p>Welcome to Dress With Trend, your destination for stylish and affordable fashion online. Discover the latest
+          clothing collections for men and women designed for comfort, modern style, and everyday wear. From casual
+          outfits to trendy fashion pieces, find the perfect look to upgrade your wardrobe.</p>
+        <a href="/collections" class="hero-cta-btn">Shop the Latest Fashion Collection</a>
+      </div>
+    </div>
+  </section>
+  <!-- Hero Content Section End -->
+
   <!-- Discount Section Start -->
-  <section *ngIf="data?.content?.coupons?.status">
-    <div class="container-fluid-lg sale-banner">
-      <div class="row">
-        <div class="col-12">
-          <app-theme-banner [banners]="data?.content?.coupons" [class]="'banner-contain hover-effect'"
-            [style]="'full_width'"></app-theme-banner>
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.coupons?.status">
+      <div class="container-fluid-lg sale-banner">
+        <div class="row">
+          <div class="col-12">
+            <app-theme-banner [banners]="data?.content?.coupons" [class]="'banner-contain hover-effect'"
+              [style]="'full_width'"></app-theme-banner>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  } @placeholder {
+    <div style="min-height: 200px;"></div>
+  }
   <!-- Discount Section End -->
- 
+
   <!-- Product Section Start -->
-  <section *ngIf="data?.content?.products_list_1?.status">
-    <div class="container-fluid-lg">
-      <app-title [title]="data?.content?.products_list_1?.title"
-        [description]="data?.content?.products_list_1?.description">
-      </app-title>
-      <div>
-        <app-theme-product [productIds]="data?.content?.products_list_1?.product_ids || []" [style]="'horizontal'"
-          [slider]="true" [sliderOption]="productSlider6Item">
-        </app-theme-product>
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.products_list_1?.status">
+      <div class="container-fluid-lg">
+        <app-title [title]="data?.content?.products_list_1?.title"
+          [description]="data?.content?.products_list_1?.description">
+        </app-title>
+        <div>
+          <app-theme-product [productIds]="data?.content?.products_list_1?.product_ids || []" [style]="'horizontal'"
+            [slider]="true" [sliderOption]="productSlider6Item">
+          </app-theme-product>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  } @placeholder {
+    <div style="min-height: 400px;"></div>
+  }
   <!-- Product Section End -->
+  
   <section class="back-main">
     <div class="container">
       <div class="col-lg-12 text-center">
@@ -53,9 +76,10 @@
       </div>
     </div>
   </section>
- 
 
-    <!-- Top Seller start -->
+
+  <!-- Top Seller start -->
+  @defer (on viewport) {
     <ng-container *ngIf="data?.content?.seller?.status">
       <section>
         <div class="container-fluid-lg">
@@ -65,79 +89,110 @@
         </div>
       </section>
     </ng-container>
-    <!-- Top Seller End -->
+  } @placeholder {
+    <div style="min-height: 200px;"></div>
+  }
+  <!-- Top Seller End -->
 
   <!-- Product Section Start -->
-  <section *ngIf="data?.content?.products_list_2?.status">
-    <div class="container-fluid-lg">
-      <app-title [title]="data?.content?.products_list_2?.title"
-        [description]="data?.content?.products_list_2?.description">
-      </app-title>
-      <div>
-        <app-theme-product [productIds]="data?.content?.products_list_2?.product_ids || []" [style]="'horizontal'"
-          [slider]="true" [sliderOption]="productSlider6Item">
-        </app-theme-product>
-      </div>
-    </div>
-  </section>
-  <!-- Product Section End -->
-
- <!-- Offer Section Start -->
- <section *ngIf="data?.content?.offer_banner?.status">
-  <div class="container-fluid-lg">
-    <div class="row">
-      <div class="col-12">
-        <app-theme-banner [banners]="data?.content?.offer_banner" [class]="'offer-box hover-effect'"
-          [style]="'full_width'"></app-theme-banner>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Offer Section End -->
-
-  <!-- Product Section Start -->
-  <section *ngIf="data?.content?.product_bundles?.status">
-    <div class="container-fluid-lg">
-      <div class="row">
-        <div class="col-12">
-          <app-theme-collection [data]="data?.content?.product_bundles?.bundles || []"></app-theme-collection>
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.products_list_2?.status">
+      <div class="container-fluid-lg">
+        <app-title [title]="data?.content?.products_list_2?.title"
+          [description]="data?.content?.products_list_2?.description">
+        </app-title>
+        <div>
+          <app-theme-product [productIds]="data?.content?.products_list_2?.product_ids || []" [style]="'horizontal'"
+            [slider]="true" [sliderOption]="productSlider6Item">
+          </app-theme-product>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  } @placeholder {
+    <div style="min-height: 400px;"></div>
+  }
+  <!-- Product Section End -->
+
+  <!-- Offer Section Start -->
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.offer_banner?.status">
+      <div class="container-fluid-lg">
+        <div class="row">
+          <div class="col-12">
+            <app-theme-banner [banners]="data?.content?.offer_banner" [class]="'offer-box hover-effect'"
+              [style]="'full_width'"></app-theme-banner>
+          </div>
+        </div>
+      </div>
+    </section>
+  } @placeholder {
+    <div style="min-height: 250px;"></div>
+  }
+  <!-- Offer Section End -->
+
+  <!-- Product Section Start -->
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.product_bundles?.status">
+      <div class="container-fluid-lg">
+        <div class="row">
+          <div class="col-12">
+            <app-theme-collection [data]="data?.content?.product_bundles?.bundles || []"></app-theme-collection>
+          </div>
+        </div>
+      </div>
+    </section>
+  } @placeholder {
+    <div style="min-height: 300px;"></div>
+  }
   <!-- Product Section End -->
 
   <!-- Four Product Section Start -->
-  <section class="top-selling-section border-box" *ngIf="data?.content?.slider_products?.status">
-    <div class="container-fluid-lg">
-      <app-four-column-product [data]="data?.content?.slider_products"></app-four-column-product>
-    </div>
-  </section>
+  @defer (on viewport) {
+    <section class="top-selling-section border-box" *ngIf="data?.content?.slider_products?.status">
+      <div class="container-fluid-lg">
+        <app-four-column-product [data]="data?.content?.slider_products"></app-four-column-product>
+      </div>
+    </section>
+  } @placeholder {
+    <div style="min-height: 400px;"></div>
+  }
   <!-- Four Product Section End -->
 
   <!-- Blog Section Start -->
-  <section *ngIf="data?.content?.featured_blogs?.status && data?.content?.featured_blogs?.blog_ids?.length">
-    <div class="container-fluid-lg">
-      <app-title [title]="data?.content?.featured_blogs?.title"
-        [description]="data?.content?.featured_blogs?.description">
-      </app-title>
-      <app-blog [blogIds]="data?.content?.featured_blogs?.blog_ids || []" [sliderOption]="productSlider">
-      </app-blog>
-    </div>
-  </section>
+  @defer (on viewport) {
+    <section *ngIf="data?.content?.featured_blogs?.status && data?.content?.featured_blogs?.blog_ids?.length">
+      <div class="container-fluid-lg">
+        <app-title [title]="data?.content?.featured_blogs?.title"
+          [description]="data?.content?.featured_blogs?.description">
+        </app-title>
+        <app-blog [blogIds]="data?.content?.featured_blogs?.blog_ids || []" [sliderOption]="productSlider">
+        </app-blog>
+      </div>
+    </section>
+  } @placeholder {
+    <div style="min-height: 300px;"></div>
+  }
   <!-- Blog Section End -->
 
   <!-- Brand Section start -->
-  <section class="brand-effect" *ngIf="data?.content?.brands?.brand_ids && data?.content?.brands?.status">
-    <div class="container-fluid-lg">
-      <app-brand [brandIds]="data?.content?.brands?.brand_ids || []"></app-brand>
-    </div>
-  </section>
+  @defer (on viewport) {
+    <section class="brand-effect" *ngIf="data?.content?.brands?.brand_ids && data?.content?.brands?.status">
+      <div class="container-fluid-lg">
+        <app-brand [brandIds]="data?.content?.brands?.brand_ids || []"></app-brand>
+      </div>
+    </section>
+  } @placeholder {
+    <div style="min-height: 100px;"></div>
+  }
   <!-- Brand Section end -->
 
   <!-- Newsletter Section Start -->
-  <section class="newsletter-section section-b-space" *ngIf="data?.content?.news_letter?.status">
-    <app-newsletter [data]="data?.content?.news_letter!"></app-newsletter>
-  </section>
+  @defer (on viewport) {
+    <section class="newsletter-section section-b-space" *ngIf="data?.content?.news_letter?.status">
+      <app-newsletter [data]="data?.content?.news_letter!"></app-newsletter>
+    </section>
+  } @placeholder {
+    <div style="min-height: 200px;"></div>
+  }
   <!-- Newsletter Section End -->
 </div>

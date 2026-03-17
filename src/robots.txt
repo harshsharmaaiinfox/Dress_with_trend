@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Block crawling of internal or non-SEO pages
+Disallow: /admin/
+Disallow: /login/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /orders/
+
+# Sitemap
+Sitemap: https://dresswithtrend.com/sitemap.xml

@@ -2,7 +2,7 @@ import { Menu } from "../interface/menu.interface";
 import { MenuStateModel } from "../state/menu.state";
 
 export const ThemeMenuOptions: any[] = [
-   
+
     // {
     //     "id": 161,
     //     "title": "Kids Fashion",
@@ -103,7 +103,7 @@ export const ThemeMenuOptions: any[] = [
         "banner_image": null,
         "child": []
     },
-   
+
     {
         "id": 45,
         "title": "Athletic Style",
@@ -194,8 +194,8 @@ export const ThemeMenuOptions: any[] = [
         "link_type": "link",
         "mega_menu": 0,
         "mega_menu_type": "simple",
-        "slug": "about-us",
-        "path": "page/about-us",
+        "slug": "aboutus",
+        "path": "aboutus",
         "badge_text": null,
         "badge_color": null,
         "content_item": null,
