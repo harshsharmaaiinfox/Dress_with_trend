@@ -12,7 +12,7 @@ export class HomeBannerComponent implements AfterViewInit, OnInit {
   @Input() data: any;
   @ViewChild('owlCarousel') owlCarousel: CarouselComponent;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.populateSliderImages();
