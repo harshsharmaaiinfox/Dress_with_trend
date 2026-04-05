@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<any> {
 
     // If Maintenance Mode On
-    if(this.isMaintenanceModeOn) {
+    if (this.isMaintenanceModeOn) {
       this.ngZone.run(() => {
         this.router.navigate(['/maintenance']);
       })

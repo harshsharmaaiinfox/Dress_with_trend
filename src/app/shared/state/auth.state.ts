@@ -68,6 +68,7 @@ export class AuthState {
       tap({
         next: result => {
           const state = ctx.getState();
+          this.authService.clearCityCache();
           ctx.patchState({
             ...state,
             access_token: result.access_token,
@@ -86,6 +87,7 @@ export class AuthState {
     return this.authService.login(action.payload).pipe(
       tap({
         next: result => {
+          this.authService.clearCityCache();
           ctx.patchState({
             access_token: result.access_token,
             permissions: [],
@@ -216,6 +218,7 @@ export class AuthState {
 
   @Action(AuthClear)
   authClear(ctx: StateContext<AuthStateModel>){
+    const hasToken = !!ctx.getState().access_token;
     ctx.patchState({
       email: '',
       token: '',
@@ -224,7 +227,9 @@ export class AuthState {
     });
     this.authService.redirectUrl = undefined;
     this.store.dispatch(new AccountClear());
-    this.store.dispatch(new ClearCart());
+    if (hasToken) {
+      this.store.dispatch(new ClearCart());
+    }
   }
 
 }

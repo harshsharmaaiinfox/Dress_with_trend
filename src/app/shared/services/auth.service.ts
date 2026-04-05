@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, shareReplay, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { AuthNumberLoginState, AuthStateModal, AuthUserForgotModel, AuthUserStateModel, AuthVerifyNumberOTPState, RegisterModal, UpdatePasswordModel, VerifyEmailOtpModel } from "../interface/auth.interface";
 
@@ -12,9 +12,9 @@ export class AuthService {
   public redirectUrl: string | undefined;
   public otpType: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  register(payload: RegisterModal): Observable<any>{
+  register(payload: RegisterModal): Observable<any> {
     return this.http.post(`${environment.URL}/register`, payload);
   }
 
@@ -22,8 +22,8 @@ export class AuthService {
     return this.http.post(`${environment.URL}/login`, payload);
   }
 
-  loginWithNumber(payload: AuthNumberLoginState): Observable<AuthStateModal>{
-    return this.http.post<AuthStateModal>(`${environment.URL}/login/number`,payload)
+  loginWithNumber(payload: AuthNumberLoginState): Observable<AuthStateModal> {
+    return this.http.post<AuthStateModal>(`${environment.URL}/login/number`, payload)
   }
 
   forgotPassword(payload: AuthUserForgotModel): Observable<any> {
@@ -45,14 +45,28 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(`${environment.URL}/logout`, {});
   }
-  
+
   validatePinCode(payload: any): Observable<any> {
     return this.http.post(`${environment.URL}/validPincode`, payload);
   }
 
+  private cityData$: Observable<any> | null = null;
   fetchAreaPINCodeJSON(): Observable<any> {
-    return this.http.get<any>(`${environment.URL}/allCitiesList`);
-    // return this.http.get<any>(`assets/pincode_cleaned.json`);
+    if (!this.cityData$) {
+      this.cityData$ = this.http.get<any>(`${environment.URL}/allCitiesList`).pipe(
+        tap({
+          error: () => {
+            this.cityData$ = null; // Don't cache errors
+          }
+        }),
+        shareReplay(1)
+      );
+    }
+    return this.cityData$;
+  }
+
+  clearCityCache() {
+    this.cityData$ = null;
   }
 
 

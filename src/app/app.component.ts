@@ -52,7 +52,9 @@ export class AppComponent {
 
     this.store.dispatch(new GetCountries());
     this.store.dispatch(new GetStates());
-    this.store.dispatch(new GetCartItems());
+    if (this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
+      this.store.dispatch(new GetCartItems());
+    }
     this.store.dispatch(new GetSettingOption());
     this.store.dispatch(new GetThemeOption());
     this.store.dispatch(new GetCurrencies({ status: 1 }));

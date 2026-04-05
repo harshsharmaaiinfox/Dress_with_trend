@@ -39,70 +39,44 @@ export class SettingState {
     return this.settingService.getSettingOption().pipe(
       tap({
         next: (result) => {
-          let customValue;
+          let customValue: any;
           const state = ctx.getState();
          
           if(!state.selectedCurrency && result?.values?.general){
             state.selectedCurrency = result?.values?.general.default_currency;
           }
 
-          if(result.values?.payment_methods?.length) {
-            customValue = JSON.parse(JSON.stringify(result.values));
-            const customPayments = [
-              {
-                name: 'fashionwithtrends_neokred',
-                status: false,
-                title: 'Pay By UPI INTENT',
-              },
-              {
-                name: 'neoKred',
-                status: false,
-                title: 'Payment by QR',
-                // icon: './assets/images/payment/pay_by_qr.png',
-              },
-              {
-                name: 'cash_free',
-                status: false,
-                title: 'Cash Free',
-                icon: './assets/images/cash_free.jpg',
-              },
-              {
-                name: 'sub_paisa',
-                status: false,
-                title: 'Sab Paisa',
-                icon: './assets/images/sub_paisa.png'
-              },
-              {
-                name: 'gaonvashi_cashfree',
-                status: false,
-                title: 'Cash Free',
-                icon: './assets/images/cash_free.jpg',
-              },
-              
-              {
-                name: 'sleeksynergy_starpaisa',
-                status: true,
-                title: 'Pay By UPI INTENT',
-                // icon: './assets/images/cash_free.jpg',
-              },
-              {
-                name: 'cashfree_sleeksynergy',
-                status: true,
-                title: 'Cash Free',
-                icon: './assets/images/cash_free.jpg',
-              },
-              {
-                name: 'sleek_nabu',
-                status: true,
-                title: 'Pay By UPI INTENT-2',
-              },
-            ];
-             customValue.general.site_name = "Your Dream Fashion"
-            customValue.payment_methods = customPayments //[result.values.payment_methods[0]];
+          const customPayments = [
+            {
+              name: 'sleeksynergy_starpaisa',
+              status: true,
+              title: 'Pay By UPI INTENT',
+            },
+            {
+              name: 'cashfree_sleeksynergy',
+              status: true,
+              title: 'Cash Free',
+              icon: './assets/images/cash_free.jpg',
+            },
+            {
+              name: 'sleek_nabu',
+              status: true,
+              title: 'Pay By UPI INTENT-2',
+            },
+          ];
+
+          customValue = JSON.parse(JSON.stringify(result.values));
+          if(customValue && customValue.general) {
+            customValue.general.site_name = "Your Dream Fashion";
           }
+          
+          if(customValue) {
+             customValue.payment_methods = customPayments;
+          }
+
           ctx.patchState({
-          ...state,
-          setting: customValue,
+            ...state,
+            setting: customValue,
           });
         },
         error: (err) => {
