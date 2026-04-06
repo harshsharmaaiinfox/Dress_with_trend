@@ -371,7 +371,7 @@
                                 (selectDelivery)="selectDelivery($event)">
                             </app-delivery-block>
                         </div>
-                        <div class="checkbox-main-box">
+                        <div class="checkbox-main-box" *ngIf="(accessToken$ | async)">
                             <div class="checkout-title1">
                                 <h2>{{ 'Payment Options' | translate }}</h2>
                             </div>
