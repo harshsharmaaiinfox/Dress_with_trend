@@ -52,8 +52,6 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3 form-box">
-                                <div class="col-md-4">
-                                    <div class="mb-3 form-box">
                                         <label class="form-label" for="phoneno">{{ 'Phone Number' | translate }}</label>
                                         <input type="number" class="form-control" formControlName="phone"
                                             placeholder="{{ 'Enter Phone' | translate }}" name="phone" id="phoneno">
@@ -372,7 +370,6 @@
                                 (selectDelivery)="selectDelivery($event)">
                             </app-delivery-block>
                         </div>
-                        <div class="checkbox-main-box" *ngIf="(accessToken$ | async)">
                         <div class="checkbox-main-box" *ngIf="(accessToken$ | async)">
                             <div class="checkout-title1">
                                 <h2>{{ 'Payment Options' | translate }}</h2>

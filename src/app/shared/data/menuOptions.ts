@@ -3,6 +3,8 @@ import { MenuStateModel } from "../state/menu.state";
 
 export const ThemeMenuOptions: any[] = [
    
+
+
    
     {
         "id": 162,
@@ -11,7 +13,7 @@ export const ThemeMenuOptions: any[] = [
         "link_type": "link",
         "mega_menu": 0,
         "mega_menu_type": "simple",
-        "slug": "men-fashion",
+        "slug": "men",
         "path": "collections?category=men",
         "badge_text": null,
         "badge_color": null,
@@ -54,15 +56,14 @@ export const ThemeMenuOptions: any[] = [
         "banner_image": null,
         "child": []
     },
-
-    {
+     {
         "id": 45,
         "title": "Athletic Style",
         "sort": null,
         "link_type": "link",
         "mega_menu": 1,
         "mega_menu_type": null,
-        "slug": "Sports-fashion",
+        "slug": "activewear",
         "path": "collections?category= activewear",
         "badge_text": null,
         "badge_color": null,
@@ -80,6 +81,56 @@ export const ThemeMenuOptions: any[] = [
         "banner_image": null,
         "child": []
     },
+    {
+        "id": 164,
+        "title": "",
+        "sort": null,
+        "link_type": "link",
+        "mega_menu": 0,
+        "mega_menu_type": "simple",
+        "slug": "about-us",
+        "path": "page/about-us",
+        "badge_text": null,
+        "badge_color": null,
+        "content_item": null,
+        "item_image_id": null,
+        "banner_image_id": null,
+        "parent_id": null,
+        "is_target_blank": 0,
+        "status": 1,
+        "created_by_id": 1,
+        "created_at": "2025-02-05T11:21:31.000000Z",
+        "product_ids": [],
+        "blog_ids": [],
+        "item_image": null,
+        "banner_image": null,
+        "child": []
+    },
+    {
+        "id": 166,
+        "title": "Winter Collections",
+        "sort": null,
+        "link_type": "sub",
+        "mega_menu": 1,
+        "mega_menu_type": "simple",
+        "slug": "winter-collections",
+        "path": null,
+        "badge_text": null,
+        "badge_color": null,
+        "content_item": null,
+        "item_image_id": null,
+        "banner_image_id": null,
+        "parent_id": null,
+        "is_target_blank": 0,
+        "status": 1,
+        "created_by_id": 1,
+        "created_at": "2025-12-15T09:05:57.000000Z",
+        "product_ids": [],
+        "blog_ids": [],
+        "item_image": null,
+        "banner_image": null,
+        "child": []
+    }
 ]
 
 
