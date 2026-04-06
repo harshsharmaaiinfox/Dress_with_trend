@@ -1,18 +1,63 @@
-
-<ul class="category-list custom-padding custom-height">
-    <li *ngFor="let price of prices">
-        <div class="form-check ps-0 m-0 category-list-box">
-            <input class="checkbox_animated" type="checkbox" 
-                id="price-filter{{price?.id}}"
-                [value]="price?.value"
-                [checked]="checked(price?.value!)"
-                (change)="applyFilter($event)">
-            <label class="form-check-label" for="price-filter{{price?.id}}">
-                <span class="name" *ngIf="price?.price else minMaxPrice">{{ price?.text }} {{ price?.price | currencySymbol }}</span>
-                <ng-template #minMaxPrice>
-                    <span class="name">{{ price?.minPrice | currencySymbol }} - {{ price?.maxPrice | currencySymbol }}</span>
-                </ng-template>
-            </label>
+<div class="price-range-filter custom-padding">
+  <div class="price-input-group">
+    <div class="price-input-wrapper">
+      <label for="min-price">{{ 'Min' | translate }}</label>
+      <input 
+        type="number" 
+        id="min-price"
+        class="form-control price-input" 
+        [value]="minPrice"
+        [min]="minValue"
+        [max]="maxValue"
+        (input)="onMinPriceChange($event)"
+        (blur)="applyFilter()">
+    </div>
+    <div class="price-input-wrapper">
+      <label for="max-price">{{ 'max' | translate }}</label>
+      <input 
+        type="number" 
+        id="max-price"
+        class="form-control price-input" 
+        [value]="maxPrice"
+        [min]="minValue"
+        [max]="maxValue"
+        (input)="onMaxPriceChange($event)"
+        (blur)="applyFilter()">
+    </div>
+  </div>
+  
+  <div class="price-range-slider-wrapper">
+    <div class="slider-container">
+      <div class="slider-track">
+        <div class="slider-range" 
+             [style.left]="getSliderPercentage(minPrice) + '%'"
+             [style.width]="(getSliderPercentage(maxPrice) - getSliderPercentage(minPrice)) + '%'">
         </div>
-    </li>
-</ul>
+      </div>
+      <input 
+        type="range" 
+        class="slider-input slider-input-min"
+        [min]="minValue"
+        [max]="maxValue"
+        [value]="minPrice"
+        (input)="onMinSliderChange($event)"
+        [style.zIndex]="minPrice > maxPrice - (maxValue - minValue) / 10 ? '5' : '3'">
+      <input 
+        type="range" 
+        class="slider-input slider-input-max"
+        [min]="minValue"
+        [max]="maxValue"
+        [value]="maxPrice"
+        (input)="onMaxSliderChange($event)"
+        [style.zIndex]="minPrice > maxPrice - (maxValue - minValue) / 10 ? '3' : '5'">
+    </div>
+  </div>
+
+  <div class="price-range-display">
+    <span class="price-range-text">
+      <span>{{ minPrice | currencySymbol }}</span>
+      <span class="separator">-</span>
+      <span>{{ maxPrice | currencySymbol }}</span>
+    </span>
+  </div>
+</div>

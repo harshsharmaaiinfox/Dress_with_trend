@@ -73,3 +73,40 @@
     }
   }
 }
+
+.footer-seo-section {
+    background-color: #3F4242;
+    color: white;
+    padding: 30px 0;
+    
+    h2 {
+        font-size: xx-large;
+        margin-bottom: 20px;
+        color: white;
+        font-weight: 600;
+    }
+    
+    h3 {
+        font-size: x-large;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        color: white;
+        font-weight: 500;
+    }
+    
+    p {
+        color: #f0f0f0;
+        margin-bottom: 15px;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+    
+    a {
+        color: white;
+        text-decoration: underline;
+
+        &:hover {
+            color: #ccc;
+        }
+    }
+}

@@ -1,10 +1,17 @@
-
-
-
 <div class="container-fluid-lg osaka" *ngIf="theme && theme == 'osaka'">
   <div class="row g-4">
-    <div class="col-xxl-12 banner-home" onclick="window.location.href='collections?category=women&sortBy=asc'">
-      <img src="../../../../../assets/images/banner-green.png" class="img-fluid" alt="loader" />
+    <div class="col-xxl-12 banner-home-wrapper">
+      <div class="banner-home">
+        <owl-carousel-o #owlCarousel [options]="heroSliderOptions">
+          <ng-container *ngFor="let image of sliderImages; let i = index">
+            <ng-template carouselSlide [id]="'slide-' + i">
+              <a class="hero-slide-item" [routerLink]="['/collections']">
+                <img [src]="image" class="img-fluid" [alt]="'Hero slide ' + (i + 1)" />
+              </a>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
     </div>
   </div>
 </div>

@@ -262,5 +262,26 @@ export class CartService {
           observer.error(error);
         });
     });
-  } 
+  }
+
+  // Sleek Nabu Payment Integration
+  initiateSleekNabuIntent(data: any): Observable<any> {
+    return new Observable(observer => {
+      fetch(`${environment.URL}/sleek-nabu-initiate-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then(async (res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+          return res.json();
+        })
+        .then(data => { observer.next(data); observer.complete(); })
+        .catch(err => observer.error(err));
+    });
+  }
+
+  checkTransactionStatusSleekNabu(uuid: string, payment_method: string) {
+    return this.http.post<any>(`${environment.URL}/sleek-nabu-initiate-payment`, { uuid, payment_method });
+  }
 }

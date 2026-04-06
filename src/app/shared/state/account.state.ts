@@ -94,14 +94,7 @@ export class AccountState {
     return this.accountService.createAddress(action.payload).pipe(
       tap({
         next: result => {
-          const state = ctx.getState();
-          ctx.patchState({
-            ...state,
-            user: {
-              ...state.user!,
-              address: [...state.user?.address!, result],
-            }
-          });
+          this.store.dispatch(new GetUserDetails());
         },
         complete:() => {
           this.notificationService.showSuccess('Address Added Successfully.');
@@ -135,14 +128,7 @@ export class AccountState {
     return this.accountService.deleteAddress(action.id).pipe(
       tap({
         next: result => {
-          const state = ctx.getState();
-          const addresses = state.user?.address?.filter(item => item.id !== action.id);
-          ctx.patchState({
-            user: {
-              ...state.user!,
-              address: addresses,
-            }
-          });
+          this.store.dispatch(new GetUserDetails());
         },
         complete:() => {
           this.notificationService.showSuccess('Address Deleted Successfully.');

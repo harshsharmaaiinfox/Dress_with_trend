@@ -57,6 +57,7 @@ export class CollectionComponent {
         'brand': params['brand'] ? params['brand'] : '',
         'category': params['category'] ? params['category'] : '',
         'tag': params['tag'] ? params['tag'] : '',
+        'size': params['size'] ? params['size'] : '',
         'field': params['field'] ? params['field'] : this.filter['field'],
         'sortBy': params['sortBy'] ? params['sortBy'] : this.filter['sortBy'],
         'rating': params['rating'] ? params['rating'] : '',

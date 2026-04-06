@@ -54,7 +54,7 @@ export const ThemeMenuOptions: any[] = [
         "banner_image": null,
         "child": []
     },
-   
+
     {
         "id": 45,
         "title": "Athletic Style",

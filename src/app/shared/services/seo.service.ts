@@ -119,16 +119,71 @@ export class SeoService {
       this.customSCO();
     } else if(path.includes('category')) {
       if(this.category) {
+        let customMetaTitle = this.category?.meta_title;
+        let customMetaDescription = this.category?.meta_description;
+
+        // Hardcoded SEO overrides based on requested requirements
+        const normalizedPath = path.toLowerCase();
+        if (normalizedPath.includes('activewear')) {
+          customMetaTitle = "Activewear & Athletic Clothing Online | Dress With Trend";
+          customMetaDescription = "Shop comfortable activewear and athletic clothing at Dress With Trend. Explore stylish workout outfits designed for performance, flexibility, and everyday fitness.";
+        } else if (normalizedPath.includes('category/men') || normalizedPath.includes('category/men-fashion')) {
+          customMetaTitle = "Trendy Men’s Clothing & Fashion Online | Dress With Trend";
+          customMetaDescription = "Shop stylish men’s clothing online at Dress With Trend. Explore trendy shirts, pants, jackets, and modern outfits designed for comfort and everyday style.";
+        } else if (normalizedPath.includes('category/women') || normalizedPath.includes('category/women-fashion')) {
+          customMetaTitle = "Trendy Women’s Clothing & Fashion | Dress With Trend";
+          customMetaDescription = "Discover trendy women’s clothing at Dress With Trend. Shop stylish tops, dresses, suits, and fashionable outfits perfect for casual, festive, and modern looks.";
+        }
+
         this.scoContent = {
           ...this.scoContent,
           'url': window.location.href,
-          'og_title': this.category?.meta_title || this.themeOption?.seo?.meta_title,
-          'og_description': this.category?.meta_description || this.themeOption?.seo?.meta_description,
-          'og_image': this.category?.category_meta_image?.original_url || this.themeOption?.seo?.og_image?.original_url,
+          'og_title': customMetaTitle || this.themeOption?.seo?.meta_title || "Dress With Trend",
+          'og_description': customMetaDescription || this.themeOption?.seo?.meta_description || "Fashion that Fits Your Trend",
+          'og_image': this.category?.category_meta_image?.original_url || this.themeOption?.seo?.og_image?.original_url || "assets/images/dream-logo.png",
         }
       }
       this.customSCO();
-    } 
+    } else if (path.includes('collections')) {
+      let customMetaTitle = this.themeOption?.seo?.meta_title || "Dress With Trend";
+      let customMetaDescription = this.themeOption?.seo?.meta_description || "Fashion that Fits Your Trend";
+      
+      try {
+        // Use standard URL parsing on the full href
+        const urlObj = new URL(window.location.href);
+        let categoryParam = urlObj.searchParams.get('category') || '';
+        
+        // Also check Path in case it's decoded differently
+        if (!categoryParam && path.includes('category=')) {
+          const match = path.match(/category=([^&]+)/);
+          if (match) categoryParam = decodeURIComponent(match[1]);
+        }
+
+        categoryParam = categoryParam.trim().toLowerCase();
+
+        if (categoryParam === 'activewear') {
+          customMetaTitle = "Activewear & Athletic Clothing Online | Dress With Trend";
+          customMetaDescription = "Shop comfortable activewear and athletic clothing at Dress With Trend. Explore stylish workout outfits designed for performance, flexibility, and everyday fitness.";
+        } else if (categoryParam === 'men' || categoryParam === 'men-fashion') {
+          customMetaTitle = "Trendy Men’s Clothing & Fashion Online | Dress With Trend";
+          customMetaDescription = "Shop stylish men’s clothing online at Dress With Trend. Explore trendy shirts, pants, jackets, and modern outfits designed for comfort and everyday style.";
+        } else if (categoryParam === 'women' || categoryParam === 'women-fashion') {
+          customMetaTitle = "Trendy Women’s Clothing & Fashion | Dress With Trend";
+          customMetaDescription = "Discover trendy women’s clothing at Dress With Trend. Shop stylish tops, dresses, suits, and fashionable outfits perfect for casual, festive, and modern looks.";
+        }
+      } catch (e) {
+        // Fallback handled by initial values
+      }
+
+      this.scoContent = {
+        ...this.scoContent,
+        'url': window.location.href,
+        'og_title': customMetaTitle,
+        'og_description': customMetaDescription,
+        'og_image': this.themeOption?.seo?.og_image?.original_url || "assets/images/dream-logo.png",
+      }
+      this.customSCO();
+    }
     else {
       this.updateDefaultSeo();
     }
@@ -183,8 +238,8 @@ export class SeoService {
   }
  
   customSCO(){
-    const title = this.scoContent['og_title'];
-    const description = this.scoContent['og_description'];
+    const title = this.scoContent['og_title'] || "Dress With Trend";
+    const description = this.scoContent['og_description'] || "Fashion that Fits Your Trend";
 
     this.titleService.setTitle(title);
     this.meta.updateTag({ name: 'title', content: title });

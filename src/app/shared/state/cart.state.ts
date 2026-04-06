@@ -113,16 +113,27 @@ export class CartState {
     return this.cartService.getCartItems().pipe(
       tap({
         next: result => {
-          // Set Selected Varaint
-          result.items.filter((item: Cart) => {
-            if(item?.variation) {
-              item.variation.selected_variation = item?.variation?.attribute_values?.map(values => values.value)?.join('/');
+          if (result && result.items) {
+            // Set Selected Variant
+            result.items.forEach((item: Cart) => {
+              if (item?.variation) {
+                item.variation.selected_variation = item?.variation?.attribute_values?.map(values => values.value)?.join('/');
+              }
+            });
+            
+            // For logged in users, always sync from backend.
+            // For guests, only overwrite if backend returned actual items (e.g. session cart).
+            const isLoggedIn = this.store.selectSnapshot(state => state.auth && state.auth.access_token);
+            if (isLoggedIn || result.items.length > 0) {
+              ctx.patchState(result);
             }
-          });
-          ctx.patchState(result);
+          }
         },
         error: err => {
-          throw new Error(err?.error?.message);
+          // If unauthenticated, we just stick with our local cart
+          if (err.status !== 401) {
+            throw new Error(err?.error?.message);
+          }
         }
       })
     );

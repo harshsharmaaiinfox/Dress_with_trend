@@ -35,10 +35,6 @@ const routes: Routes = [
     component: OfferComponent
   },
   {
-    path: 'about-us',
-    component: AboutUsComponent
-  },
-  {
     path: 'search',
     component: SearchComponent
   },

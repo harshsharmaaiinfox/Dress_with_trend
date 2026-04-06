@@ -5,6 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 import { Select2Data, Select2UpdateEvent } from 'ng-select2-component';
 import { CreateAddress, UpdateAddress } from '../../../../action/account.action';
+import { GetStates } from '../../../../action/state.action';
 import { CountryState } from '../../../../state/country.state';
 import { StateState } from '../../../../state/state.state';
 import { UserAddress } from '../../../../interface/user.interface';
@@ -12,6 +13,7 @@ import * as data from '../../../../data/country-code';
 import { Country, State, City }  from 'country-state-city';
 import { AuthService } from '../../../../services/auth.service';
 import { NotificationService } from '../../../../services/notification.service';
+import { HideButtonSpinnerAction } from '../../../../action/loader.action';
 import { get } from 'http';
 import { state } from '@angular/animations';
 
@@ -76,10 +78,7 @@ export class AddressModalComponent {
 
     const localUserCheck = JSON.parse(localStorage.getItem('account') || '');
     if(localUserCheck?.user?.access_token) {
-      
     }
-    this.downloadPINAreaExcelJSON();
-
     this.form.controls['pincode']?.valueChanges
     .pipe(
       debounceTime(500),
@@ -136,7 +135,16 @@ export class AddressModalComponent {
               });
             }
 
-            this.form.controls['state_id'].setValue(this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].label : '');
+            const stateName = this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].StateName : '';
+            const allStates = this.store.selectSnapshot(StateState.state).data;
+            const foundState = allStates.find((st: any) => st.name.toLowerCase() === stateName.toLowerCase());
+            
+            this.form.controls['state_id'].setValue(foundState ? String(foundState.id) : '');
+            
+            if (foundState) {
+              this.form.controls['country_id'].setValue(foundState.country_id);
+            }
+
             setTimeout(() => {
               this.form.controls['city'].setValue(this.filterPinCodeAreas.length ? this.filterPinCodeAreas[0].District : '');
               this.form.controls['area'].setValue(this.officeNameData.length ? this.officeNameData[0].label : '');
@@ -171,14 +179,43 @@ export class AddressModalComponent {
   downloadPINAreaExcelJSON() {
     this.authService.fetchAreaPINCodeJSON().subscribe({
       next: (res) => {
-        if(res) {
-          this.pinCodeAreaOfficeCircleDataJSON = res['data'];
-          this.stateNameData = [...new Map(this.pinCodeAreaOfficeCircleDataJSON.map((item: any) => [item.StateName, item])).values()];
+        if(res && res.success !== false) {
+          this.pinCodeAreaOfficeCircleDataJSON = Array.isArray(res) ? res : (res['data'] && Array.isArray(res['data']) ? res['data'] : []);
+          
+          if (!this.pinCodeAreaOfficeCircleDataJSON || this.pinCodeAreaOfficeCircleDataJSON.length === 0) {
+            console.error('City Data is empty or invalid format', res);
+          }
+
+          let allStates = this.store.selectSnapshot(StateState.state).data;
+          
+          if (!allStates || !allStates.length) {
+            this.store.dispatch(new GetStates()).subscribe(() => {
+              this.populateStateData();
+            });
+          } else {
+            this.populateStateData();
+          }
         } else {
           this.notificationService.showError('Failed to fetch Pincode and Area data');
         }
       }
     });
+  }
+
+  populateStateData() {
+    const allStates = this.store.selectSnapshot(StateState.state).data;
+    const uniqueStatesFromJSON = [...new Set(this.pinCodeAreaOfficeCircleDataJSON.map((item: any) => item.StateName))];
+    
+    this.stateNameData = uniqueStatesFromJSON.filter(name => !!name).map(name => {
+      const found = allStates.find((st: any) => 
+        String(st.name).toLowerCase().trim() === String(name).toLowerCase().trim()
+      );
+      return {
+        label: String(name),
+        value: found ? String(found.id) : String(name)
+      };
+    });
+    this.cdRef.detectChanges();
   }
 
   validatePinCode(payload: any) {
@@ -273,6 +310,9 @@ export class AddressModalComponent {
   }
 
   async openModal(value?: UserAddress) {
+    if (!this.pinCodeAreaOfficeCircleDataJSON) {
+      this.downloadPINAreaExcelJSON();
+    }
     this.modalOpen = true;
     this.patchForm(value);
     this.modalService.open(this.AddressModal, {
@@ -326,21 +366,30 @@ export class AddressModalComponent {
   submit(){
 
     this.form.markAllAsTouched();
-    this.form.value['country_id'] = 'INDIA';
-    let action = new CreateAddress(this.form.value);
+    const payload = this.form.getRawValue();
+    payload['country_id'] = 'INDIA';
+    let action = new CreateAddress(payload);
 
     if(this.address) {
-      action = new UpdateAddress(this.form.value, this.address.id);
+      action = new UpdateAddress(payload, this.address.id);
     }
-    if(this.form.valid) {
+    if (this.form.valid) {
       this.store.dispatch(action).subscribe({
-        complete: () => {
+        next: () => {
           this.form.reset();
-          if(!this.address){
+          if (!this.address) {
             this.form?.controls?.['country_code'].setValue('91');
           }
+          this.store.dispatch(new HideButtonSpinnerAction());
+          this.modalService.dismissAll();
+        },
+        error: (err) => {
+          console.error('Address Action Error:', err);
+          this.store.dispatch(new HideButtonSpinnerAction());
         }
       });
+    } else {
+      console.warn('Form is invalid:', this.form);
     }
   }
 

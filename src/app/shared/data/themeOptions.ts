@@ -105,7 +105,7 @@ export const themeOptionsYourDreamFashion = {
             "useful_link": [
                 {
                     "id": 3,
-                    "value": "about-us",
+                    "value": "aboutus",
                     "name": "About Us"
                 }
             ],
@@ -144,7 +144,7 @@ export const themeOptionsYourDreamFashion = {
         "collection": {
             "collection_layout": "collection_offcanvas_filter",
             "collection_categories_ids": [],
-            "collection_banner_image_url":"/cat-banner.png"
+            "collection_banner_image_url": "/cat-banner.png"
         },
         "product": {
             "product_layout": "product_thumbnail",
