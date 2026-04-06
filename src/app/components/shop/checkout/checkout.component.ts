@@ -10,8 +10,9 @@ import { AccountState } from '../../../shared/state/account.state';
 import { CartState } from '../../../shared/state/cart.state';
 import { OrderState } from '../../../shared/state/order.state';
 import { Checkout, PlaceOrder } from '../../../shared/action/order.action';
-import { ClearCart } from '../../../shared/action/cart.action';
+import { ClearCart, SyncCart } from '../../../shared/action/cart.action';
 import { Register } from '../../../shared/action/auth.action';
+import { CartAddOrUpdate } from '../../../shared/interface/cart.interface';
 import { AddressModalComponent } from '../../../shared/components/widgets/modal/address-modal/address-modal.component';
 import { Cart } from '../../../shared/interface/cart.interface';
 import { SettingState } from '../../../shared/state/setting.state';
@@ -85,6 +86,8 @@ export class CheckoutComponent {
   public couponError: string | null;
   public checkoutTotal: OrderCheckout;
   public loading: boolean = false;
+  public localCartItems: Cart[] = [];
+  public localSubtotal: number = 0;
 
   public shippingStates$: Observable<Select2Data>;
   public billingStates$: Observable<Select2Data>;
@@ -138,7 +141,7 @@ export class CheckoutComponent {
       email: new FormControl('', [Validators.required, Validators.email]),
       country_code: new FormControl('91', [Validators.required]),
       phone: new FormControl('', [Validators.required]),
-      password: new FormControl(),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       password_confirmation: new FormControl(),
       shipping_address: new FormGroup({
         title: new FormControl('', [Validators.required]),
@@ -499,13 +502,120 @@ export class CheckoutComponent {
 
   ngOnInit() {
     this.checkout$.subscribe(data => this.checkoutTotal = data);
+    this.hydrateGuestCart();
     this.products();
+  }
+
+  registerGuest() {
+    const name = this.form.get('name')?.value;
+    const email = this.form.get('email')?.value;
+    const phone = this.form.get('phone')?.value;
+    const country_code = this.form.get('country_code')?.value;
+    const password = this.form.get('password')?.value;
+
+    this.form.get('name')?.markAsTouched();
+    this.form.get('email')?.markAsTouched();
+    this.form.get('phone')?.markAsTouched();
+    this.form.get('password')?.markAsTouched();
+
+    if (!name || !email || !phone || !password) {
+      this.notificationService.showError('Please fill Name, Email, Phone and Password to register.');
+      return;
+    }
+
+    const payload: any = {
+      name, email, phone: Number(phone),
+      country_code: Number(country_code) || 91,
+      password,
+      password_confirmation: password
+    };
+
+    this.loading = true;
+    this.store.dispatch(new Register(payload)).subscribe({
+      complete: () => {
+        // Sync guest cart items to the new account
+        const syncItems: CartAddOrUpdate[] = (this.localCartItems || []).map(item => ({
+          id: null,
+          product_id: item.product_id,
+          product: item.product ? item.product : null,
+          variation: item.variation ? item.variation : null,
+          variation_id: item.variation_id ? item.variation_id : null,
+          quantity: item.quantity
+        }));
+        const finishAndReload = () => {
+          try { localStorage.removeItem('guest_cart'); } catch {}
+          this.loading = false;
+          this.notificationService.showSuccess('Registered successfully. Please complete your checkout.');
+          // Re-navigate to /checkout so component re-initializes as authenticated user
+          // (addresses, delivery options, payment options, etc. are fetched on init).
+          // Use skipLocationChange hop to force component re-creation.
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/checkout']);
+          });
+        };
+        if (syncItems.length) {
+          this.store.dispatch(new SyncCart(syncItems)).subscribe({
+            complete: finishAndReload,
+            error: finishAndReload
+          });
+        } else {
+          finishAndReload();
+        }
+      },
+      error: (err: any) => {
+        this.loading = false;
+        const msg = err?.error?.message || err?.message || 'Registration failed. Please try again.';
+        this.notificationService.showError(msg);
+      }
+    });
+  }
+
+  private hydrateGuestCart() {
+    // For guest users, ensure cart state is populated from localStorage
+    const hasToken = this.store.selectSnapshot((s: any) => s.auth && s.auth.access_token);
+    if (hasToken) return;
+    const currentItems = this.store.selectSnapshot(CartState.cartItems) || [];
+    if (currentItems.length) return;
+    try {
+      const raw = localStorage.getItem('guest_cart');
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      if (saved && saved.items && saved.items.length) {
+        this.store.reset({
+          ...this.store.snapshot(),
+          cart: {
+            ...this.store.snapshot().cart,
+            items: saved.items,
+            total: saved.total || 0,
+            is_digital_only: saved.is_digital_only ?? false
+          }
+        });
+      }
+    } catch {}
   }
 
   products() {
     this.cartItem$.subscribe(items => {
+      // Primary: NgXS state. Fallback: localStorage guest_cart
+      let source: Cart[] = items && items.length ? items : [];
+      if (!source.length) {
+        try {
+          const raw = localStorage.getItem('guest_cart');
+          if (raw) {
+            const saved = JSON.parse(raw);
+            if (saved?.items?.length) source = saved.items;
+          }
+        } catch {}
+      }
+      this.localCartItems = source;
+      this.localSubtotal = source.reduce((sum, item: Cart) => {
+        const unit = item?.variation ? item.variation.sale_price
+                   : item?.wholesale_price ? item.wholesale_price
+                   : item?.product?.sale_price || 0;
+        return sum + (unit * (item?.quantity || 0));
+      }, 0);
       this.productControl.clear();
-      items.forEach((item: Cart) =>
+      source.forEach((item: Cart) =>
         this.productControl.push(
           this.formBuilder.group({
             product_id: new FormControl(item?.product_id, [Validators.required]),
