@@ -33,9 +33,43 @@ export class CartState {
     private store: Store) {
   }
 
+  private readonly GUEST_CART_KEY = 'guest_cart';
+
+  private isGuest(): boolean {
+    return !this.store.selectSnapshot(state => state.auth && state.auth.access_token);
+  }
+
+  private loadGuestCart(): CartStateModel | null {
+    try {
+      const raw = localStorage.getItem(this.GUEST_CART_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+  }
+
+  private saveGuestCart(ctx: StateContext<CartStateModel>) {
+    if (!this.isGuest()) return;
+    const s = ctx.getState();
+    try {
+      localStorage.setItem(this.GUEST_CART_KEY, JSON.stringify({
+        items: s.items, total: s.total, is_digital_only: s.is_digital_only
+      }));
+    } catch {}
+  }
+
   ngxsOnInit(ctx: StateContext<CartStateModel>) {
     ctx.dispatch(new ToggleSidebarCart(false));
     ctx.dispatch(new CloseStickyCart());
+    // Hydrate guest cart from localStorage
+    if (this.isGuest()) {
+      const saved = this.loadGuestCart();
+      if (saved && saved.items?.length) {
+        ctx.patchState({
+          items: saved.items,
+          total: saved.total || 0,
+          is_digital_only: saved.is_digital_only ?? false
+        });
+      }
+    }
   }
 
   @Selector()
@@ -66,6 +100,14 @@ export class CartState {
   @Action(GetCartItems)
   getCartItems(ctx: StateContext<CartStateModel>) {
     if (!this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
+      const saved = this.loadGuestCart();
+      if (saved && saved.items?.length) {
+        ctx.patchState({
+          items: saved.items,
+          total: saved.total || 0,
+          is_digital_only: saved.is_digital_only ?? false
+        });
+      }
       return;
     }
     return this.cartService.getCartItems().pipe(
@@ -246,6 +288,7 @@ export class CartState {
     output.is_digital_only = output.items.map(item => item.product && item?.product?.product_type).every(item => item == 'digital');
 
     ctx.patchState(output);
+    this.saveGuestCart(ctx);
 
     setTimeout(() => {
       this.store.dispatch(new CloseStickyCart());
@@ -312,6 +355,7 @@ export class CartState {
     });
 
     if (!this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
+      this.saveGuestCart(ctx);
       return;
     }
     return this.cartService.updateCart(action.payload).pipe(
@@ -366,6 +410,7 @@ export class CartState {
     });
 
     if (!this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
+      this.saveGuestCart(ctx);
       return;
     }
     return this.cartService.replaceCart(action.payload).pipe(
@@ -393,6 +438,7 @@ export class CartState {
     });
 
     if (!this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
+      this.saveGuestCart(ctx);
       return;
     }
 
@@ -440,10 +486,12 @@ export class CartState {
   @Action(ClearCart)
   clearCart(ctx: StateContext<CartStateModel>) {
     if (!this.store.selectSnapshot(state => state.auth && state.auth.access_token)) {
-      return ctx.patchState({
+      ctx.patchState({
         items: [],
         total: 0
       });
+      try { localStorage.removeItem(this.GUEST_CART_KEY); } catch {}
+      return;
     } else {
       return this.cartService.clearCart().pipe(
         tap({
