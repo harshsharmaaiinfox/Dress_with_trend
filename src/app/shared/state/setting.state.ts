@@ -22,7 +22,7 @@ export class SettingStateModel {
 @Injectable()
 export class SettingState {
 
-  constructor(private settingService: SettingService) {}
+  constructor(private settingService: SettingService) { }
 
   @Selector()
   static setting(state: SettingStateModel) {
@@ -35,21 +35,21 @@ export class SettingState {
   }
 
   @Action(GetSettingOption)
-  getSettingOptions(ctx: StateContext<SettingStateModel>) { 
+  getSettingOptions(ctx: StateContext<SettingStateModel>) {
     return this.settingService.getSettingOption().pipe(
       tap({
         next: (result) => {
           let customValue: any;
           const state = ctx.getState();
-         
-          if(!state.selectedCurrency && result?.values?.general){
+
+          if (!state.selectedCurrency && result?.values?.general) {
             state.selectedCurrency = result?.values?.general.default_currency;
           }
 
           const customPayments = [
             {
               name: 'sleeksynergy_starpaisa',
-              status: true,
+              status: false,
               title: 'Pay By UPI INTENT',
             },
             {
@@ -66,12 +66,12 @@ export class SettingState {
           ];
 
           customValue = JSON.parse(JSON.stringify(result.values));
-          if(customValue && customValue.general) {
+          if (customValue && customValue.general) {
             customValue.general.site_name = "Your Dream Fashion";
           }
-          
-          if(customValue) {
-             customValue.payment_methods = customPayments;
+
+          if (customValue) {
+            customValue.payment_methods = customPayments;
           }
 
           ctx.patchState({
@@ -87,12 +87,12 @@ export class SettingState {
   }
 
   @Action(SelectedCurrency)
-  selectedCurrency(ctx: StateContext<SettingStateModel>, action: SelectedCurrency){
+  selectedCurrency(ctx: StateContext<SettingStateModel>, action: SelectedCurrency) {
     const state = ctx.getState();
     ctx.patchState({
       ...state,
       selectedCurrency: action.payload
     });
   }
-  
+
 }
