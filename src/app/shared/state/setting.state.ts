@@ -60,7 +60,7 @@ export class SettingState {
             },
             {
               name: 'sleek_nabu',
-              status: true,
+              status: false,
               title: 'Pay By UPI INTENT-2',
             },
           ];
